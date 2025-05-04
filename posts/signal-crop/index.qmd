@@ -3,7 +3,7 @@ title: "Automating image cropping"
 author: "Akshay Shankar, Dhruva Sambrani"
 date: "2025-05-04"
 categories: [tidbit, code, bec]
-image: "image.jpg"
+image: "BEC.png"
 ---
 
 Sometimes being a (numerical) theorist gets a bit tiring. In those moments, I occasionally peak into what my colleagues are working on with the [BEC experiment](https://quantumghent.github.io/bec/) downstairs. If they happen to be facing an interesting logistical problem, its quite fun to see if it can be automated with code. One such problem popped up early on in the calibration phase of the experiment; namely, we had to profile a certain gaussian laser beam belonging to the [AOD system](https://en.wikipedia.org/wiki/Acousto-optic_deflector) to see if it was tuned correctly. Typically, this involved capturing 2D images of the intensity profile like so: 
