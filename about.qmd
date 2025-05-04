@@ -1,0 +1,21 @@
+---
+title: "About me"
+image: profile.png
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/20akshay00
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/20akshay00
+    - icon: github
+      text: Github
+      href: https://github.com/20akshay00
+
+---
+
+Hi! I'm Akshay, a PhD student at [QuantumGroup@UGent](https://quantumghent.github.io/) with an interest in the exotic physics of Bose-Einstein condensates and programming. I am currently working on utilizing Tensor Network techniques to study BEC systems in the context of quantum simulation experiments. When I'm not performing research, I enjoy [making games](https://20akshay00.itch.io/) with the [Godot engine](https://godotengine.org/). You can find out more about the things I work on in my [main website](https://20akshay00.github.io).
+
+Over the past year, I've found that my research seems to involve solving many tiny problems which have _some_ insight to offer but not enough to share in any usual platforms of scientific discourse. As an attempt to preserve these tidbits from fading into obscurity as I inevitably forget about them, I have begun documenting them here.

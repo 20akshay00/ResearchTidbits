@@ -1,0 +1,128 @@
+---
+title: "Automating image cropping"
+author: "Akshay Shankar, Dhruva Sambrani"
+date: "2025-05-04"
+categories: [tidbit, code, bec]
+image: "image.jpg"
+---
+
+Sometimes being a (numerical) theorist gets a bit tiring. In those moments, I occasionally peak into what my colleagues are working on with the [BEC experiment](https://quantumghent.github.io/bec/) downstairs. If they happen to be facing an interesting logistical problem, its quite fun to see if it can be automated with code. One such problem popped up early on in the calibration phase of the experiment; namely, we had to profile a certain gaussian laser beam belonging to the [AOD system](https://en.wikipedia.org/wiki/Acousto-optic_deflector) to see if it was tuned correctly. Typically, this involved capturing 2D images of the intensity profile like so: 
+
+```{julia}
+#| echo: false
+begin
+    using Pkg
+    Pkg.activate("../../")
+    Pkg.instantiate()
+    using JLD2, Plots, StatsBase
+end
+```
+
+```{julia}
+begin
+    data = load("signal.jld2")["images"]
+    plot(heatmap(data[1], title="Image #1"), heatmap(data[2], title="Image #2"), size=(1000, 300))
+end
+```
+
+These images have quite a high resolution but the actual signal is tiny and most of the space is just empty. So, before running any analysis routines on this data, it must be cropped to put the actual beam in focus. Nowadays this can be easily achieved with the host of computer vision algorithms that can be found in mature ecosystems such as OpenCV. However, I wanted to see if a simpler approach was possible here since the signal is not particularly complex in its structure. In the ideal case, it is supposed to be an exact gaussian beam, although in this particular instance, there was some odd modulation of interference fringes within the spot which is what we wanted to investigate.
+
+## Automating the cropping
+I have not spent too much time to figure out exactly why the solution works, so I simply outline the procedure here and discuss how we stumbled upon it. I should note here that what follows was largely borne out of discussions with [Dhruva Sambrani](https://dhruvasambrani.github.io/).
+
+Before proceeding, we assume that there is only a single point of interest and it is roughly a single-peaked intensity distribution. Finding the point of interest (i.e., the signal peak) is usually not too hard since one may use boxed-averages or some other sophisticated algorithm (there is an _excellent_ [stack exchange thread](https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data) on this) to locate regions of interest where the intensity peaks. Obtaining a measure of the spread of the spot is a bit harder though. Ideally the signal is equipped with a standard deviation as it is a gaussian beam, but we cannot perform a linear regression to fit it to this model and extract the parameter as such (the whole point is to reduce the size of the image before doing these things). One may also just compute $\sigma = \sqrt{\int x^2 \cdot I(x) dx - (\int x \cdot I(x) dx)^2}$ using the discrete data, $I(x_i)$ with $x_i$ being the pixel co-ordinates. But in higher dimensions, this would require performing independant calculations across multiple cross-sections (either horizontal/vertical or radially outwards) and averaging those out, but we are lazy programmers trying to find the path of least action. So we instead look for some simpler qualitative measure that approximately gives us the spread.
+
+The rough idea is as follows; we expect that the standard deviation of the intensity values around the peak of the beam should hold the information of the signal spread (there is likely a direct relation here). This is simple to compute; $stddev(I) = \frac{1}{N} \sum_{i} (I_i - \bar{I})^2$ where $\bar{I}$ is the mean intensity within the area. However, we do not know how large an area around the peak must be considered to compute this deviation. 
+
+In order to facilitate the exploration of this concept, we first write a small function to extract the indices corresponding to a (hyper-cube) of length `2 * window` centered around the point `anchor`. All the code in this post is written to be applicable regardless of the dimensionality of the data.
+```{julia}
+function cube(anchor, window)
+    return [
+        rmin:rmax for (rmin, rmax) in
+        zip(anchor .- window, anchor .+ window)
+    ]
+end
+```
+
+We then define the measure of the extent of the signal as the standard deviation of the intensity values in a cube of pixels centered around the signal peak.
+```{julia}
+measure_extent(data, anchor, window) = std(data[cube(anchor, window)...])
+```
+
+The qualitative value of the signal spread is determined by computing the above measure over a range of (hyper-)cube sizes around the signal peak, and finding the point where it is maximum. Since this is only a qualitative value, we still require a hand-tuned parameter `scale` to adjust the final result.
+```{julia}
+# extract (hyper-)cubical ranges for cropping; f - measure of extent
+function crop_extents(data; scale=5, max_window=200, f=measure_extent)
+    anchor = Tuple(argmax(data)) # replace with robust peak finding algorithm 	
+    extent = argmax([f(data, anchor, window) for window in 1:max_window])
+
+    return cube(anchor, extent * scale)
+end
+```
+
+The biggest assumption here is that the standard deviation curve peaks at some non-zero value of the window size. We see that this is indeed the case for a unimodal distribution using some generated 1D data.
+
+```{julia}
+let
+    gaussian1D(x, A, x0, sig) = A * exp(-(x - x0)^2 / (2 * sig^2))
+    x = -50:0.1:50
+    y = gaussian1D.(x, 1, 20, 1)
+    yerr = 0.5 * rand(length(x))
+
+    anchor, anchorerr = argmax(y), argmax(y .+ yerr)
+    windows = 1:170
+    rng = [measure_extent(y, anchor, window) for window in windows]
+    rngerr = [measure_extent(y .+ yerr, anchor, window) for window in windows]
+
+    plot(windows, rng, lab="Clean signal", lw=2, c=1)
+    plot!(windows, rngerr, lab="Noisy signal", lw=2, c=2)
+    vline!([argmax(rng)], c=1, lab="", ls=:dash, alpha=0.75)
+    vline!([argmax(rngerr)], c=2, lab="", ls=:dash, alpha=0.75)
+
+    plot!(legend=:bottomright, xlabel="Independant variable", ylabel="Measure of signal spread")
+end
+```
+
+The boxed standard deviation measure seems to monotonically increase upto a maximum value and then continues to monotonically decrease. The window size which achieves the maximum value of this measure gives us a qualitative correspondence to the extent of the signal. We simply extract this value and use an appropriate multiplier to crop the data as required.
+
+```{julia}
+#| echo: false
+let
+    gaussian1D(x, A, x0, sig) = A * exp(-(x - x0)^2 / (2 * sig^2))
+    x = -50:0.1:50
+    y = gaussian1D.(x, 1, 35, 1) .+ 0.5 * rand(length(x))
+    rng = crop_extents(y; max_window=10)
+    p1 = plot(x, y, lw=1, lab="", title="Raw data")
+    p2 = plot(x[rng...], y[rng...], lab="", title="Cropped data")
+    plot(p1, p2, size=(1000, 300), legend=:topleft)
+end
+```
+
+```{julia}
+#| echo: false
+let
+    d = data[1]
+    rng = crop_extents(d)
+
+    p1 = heatmap(d, title="Raw image")
+    p2 = heatmap(rng[1], rng[2], d[rng...], title="Cropped image")
+    display(plot(p1, p2, size=(1000, 300)))
+
+    d = data[2]
+    rng = crop_extents(d)
+
+    p1 = heatmap(d, title="Raw image")
+    p2 = heatmap(rng[1], rng[2], d[rng...], title="Cropped image")
+    display(plot(p1, p2, size=(1000, 300)))
+end
+```
+
+Some caveats with this method seems to be that:
+
+(1) high sensitivity to estimated location of the peak of the signal, i.e, the anchor.
+
+(2) the signal must have minimal overlap with other signals, and roughly symmetric spread (i.e., gaussian-like, without long tails) to ensure optimal performance.
+
+For what came out of a quick text conversation with a friend, this was a pretty interesting find!
+
+
