@@ -1,0 +1,227 @@
+---
+title: "The callback pattern"
+author: "Akshay Shankar"
+date: "2025-05-05"
+categories: [tidbit, code]
+---
+
+One of my favourite design patterns is the `Callback` (also known as the [`Command`](https://gameprogrammingpatterns.com/command.html
+) pattern in object-oriented contexts). Loosely speaking, a callback is simply a function `f` whose reference has been passed on to another function `g` which then proceeds to invoke `f` upon completion at a later time. It is trivially usable in languages that implement functions as first-class citizens (where they may be passed around as arguments with no hassle). While the idea is quite simple, it can lend itself to some very powerful and intuitive user interfaces! I've had natural use-cases arise both during my day-to-day research as well as my forays into game development.
+
+Let us consider a simple and perhaps a bit over-engineered example using Julia to demonstrate this idea. Say we want to write a generic interface for a differential equation solver. (Note that much of what I present here is simply a poor man's version of the equivalent implementation in the behemoth that is [DifferentialEquations.jl](https://docs.sciml.ai/DiffEqDocs/stable/).)
+
+# A generic integrator interface
+[RK4](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods) seems like a good place to start. We begin by defining a struct to hold the state of the integrator, $(u, tspan)$, where $u$ can be anything that implements the methods `similar` and supports basic algebraic operations, and tspan is an `AbstractRange` specifying the time interval of problem. The remaining variables are dummies to avoid allocation in a [hot loop](https://en.wikipedia.org/wiki/Hot_spot_(computer_programming)).
+```{julia}
+abstract type AbstractIntegrator end
+
+struct RK4Integrator{T,S} <: AbstractIntegrator
+    # current solver state
+    u::T
+    tspan::S
+
+    # intermediate variables
+    k1::T
+    k2::T
+    k3::T
+    k4::T
+    tmp::T
+
+    RK4Integrator(u, tspan) = new{typeof(u),typeof(tspan)}(
+        u, tspan, similar(u), similar(u), similar(u), similar(u), similar(u)
+    )
+end
+```
+
+Every integrator is expected to implement a `step!` method that expects a function `f!` implementing the in-place derivatve, and performs the actual time-stepping.
+```{julia}
+function step!(integrator::RK4Integrator, f!, t)
+    (; u, tspan, k1, k2, k3, k4, tmp) = integrator
+    dt = step(tspan)
+
+    f!(k1, u, t)
+
+    @. tmp = u + dt / 2 * k1
+    f!(k2, tmp, t + dt / 2)
+
+    @. tmp = u + dt / 2 * k2
+    f!(k3, tmp, t + dt / 2)
+
+    @. tmp = u + dt * k3
+    f!(k4, tmp, t + dt)
+
+    @. u += dt / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+    return u
+end
+```
+
+Then, we require only one generic function that loops through the time-steps. Below we just implement a basic version, but there is nothing stopping us from being more sophisticated with adaptive algorithms as well. At this point, we have introduced the notion of a callback as a mutating function that takes the input `(iter, integrator)::(Integer, AbstractIntegrator)` and is invoked at the end of every iteration. We see now that the callback can be utilized by the user to run custom logic within the integrator loop without ever having to touch the actual internals!
+
+```{julia}
+function solve!(f!, u0, tspan; solver, (callback!)=(iter, integrator) -> nothing)
+    integrator = solver(u0, tspan)
+
+    for iter in eachindex(tspan)
+        step!(integrator, f!, tspan[iter])
+        callback!(iter, integrator)
+    end
+end
+```
+We can now solve any ordinary differential equation with the RK4 method!
+```{julia}
+	solve!(dfdt!, [5.], range(0., 1., length=100), solver = RK4Integrator, (callback!)=CallbackList([record_state, kick_callback]))
+```
+
+Note that this function only returns the value of `u` at the last time-step, which is a bit weird since typically we would want the evolution of the state at a time-series. While this was an artifical oversight on my part, it also provides a good opportunity to utilize callbacks to store custom data during the solver steps. 
+
+# The callback struct
+Generally, custom logic can be stateful (i.e, have persistent local data), one would need to create a closure over the function that actually performs the mutating action on the state of the integrator. However, Julia offers another (equivalent) alternative; namely, to define a struct that encapsulates the data, which can then be invoked as a function with access to this data. Since both structs and functions may be invoked by means of a function call syntax, I will generically refer to them as `callables` henceforth.
+
+In order to define a generic interface, we first need to think about what the general usecase of callbacks would be. Typically we expect that callbacks will have the specific form of evaluating whether a certain `condition` is met at the time of invocation, and if so, it performs a certain `effect` that mutates the state of the integrator. For example, we may want to save a certain variable every 10 iterations, or normalize the state whenever it deviates beyond a certain threshold, etc. So, we define a `Callback` struct as a collection of two callables; (1) `condition` with signature `(iter, integrator) -> bool` and (2) `effect` with signature `(iter, integrator) -> integrator`, although it is intended to be mutating.
+
+```{julia}
+begin
+	struct Callback{C,E}
+	    "condition for performing callback: (iter, integrator) -> bool"
+	    condition::C
+	    "callback function acting on solver state: (iter, integrator) -> integrator"
+	    effect::E
+	end
+	
+	condition(p::Callback) = p.condition
+	effect(p::Callback) = p.effect
+	
+	function (p::Callback)(iter, integrator)
+	    if condition(p)(iter, integrator)
+	        effect(p)(iter, integrator)
+	    end
+	
+	    return integrator
+	end
+end
+```
+We can further define a `CallbackList` that sequentially invokes its elements if we have more than one callback.
+```{julia}
+begin
+    struct CallbackList
+        callbacks::Vector{Callback}
+    end
+
+    function (p::CallbackList)(iter, integrator)
+        for callback in p.callbacks
+            callback(iter, integrator)
+        end
+
+        return integrator
+    end
+
+    Base.getindex(p::CallbackList, idx) = getindex(p.callbacks, idx)
+    Base.length(p::CallbackList) = length(p.callbacks)
+end
+```
+Now that the basic structure is in place, let us implement some common `condition`s. Again, these don't _have_ to be structs, but since the specific use-cases here require statefulness, they are an appropriate choice. The only restriction regarding the function call is that they must return a `bool` as mentioned earlier. We have not placed explicit safegaurds to statically check this, so the program would fail at run-time if the signature does not match what is expected.
+```{julia}
+begin
+    # trigger every n iterations
+    mutable struct OnIterElapsed
+        "number of iterations between trigger"
+        save_freq::Int
+
+        loop::Bool # if true, continuously fires, otherwise it is a one-shot condition
+        flag::Bool # true if condition has been fired once
+
+        OnIterElapsed(save_freq, loop=true) = new(save_freq, loop, false)
+    end
+
+    function (p::OnIterElapsed)(iter, integrator)
+        res = iszero(iter % p.save_freq)
+        return p.loop ? res : (!p.flag ? (p.flag = res; p.flag) : false)
+    end
+
+    # maybe for saving data to file as a backup during long program runs
+    mutable struct OnRealTimeElapsed
+        "starting time in seconds"
+        start_tick::Float64
+        "number of seconds between trigger"
+        save_freq::Float64
+
+        # :s - second, :m - minute, :h - hour
+        function OnRealTimeElapsed(freq, unit=:m)
+            if unit == :m
+                freq *= 60
+            elseif unit == :h
+                freq *= 3600
+            elseif unit != :s
+                throw(ArgumentError("invalid unit `:$unit`, expected `:s`, `:m` or `:h`"))
+            end
+
+            new(time(), freq)
+        end
+    end
+
+    # only gets called AFTER an iteration is complete!
+    (p::OnRealTimeElapsed)(iter, state, H, envs) = ((time() - p.start_tick) > p.save_freq) ? (p.start_tick = time(); true) : false
+end
+```
+We now define a generic `effect` that simply computes some specified observables using the integrator state. We do so by defining a struct `RecordObservable` which expects an input `recipe` which is a named tuple, for example; `(modsq = (iter, integrator) -> integrator.u^2, iter = (iter, integrator) -> iter)`. It then stores the result in `data` whenever the `condition` of its parent `Callback` returns `true`. While this is a trivial example, it may be quite useful if there is some internal integrator state (which is not simply the solution `u`) that must be tracked.
+
+```{julia}
+begin
+    struct RecordObservable{D,O}
+        "collection of string-array pairs containing observable data"
+        data::D
+        "functions to compute observable data"
+        observables::O
+
+        function RecordObservable(recipe)
+            names = keys(recipe)
+            observables = values(recipe)
+            data = NamedTuple{names}(([] for _ in eachindex(names)))
+            return new{typeof(data),typeof(observables)}(data, observables)
+        end
+    end
+
+    function Base.getproperty(p::RecordObservable, key::Symbol)
+        if key in fieldnames(typeof(p))
+            return getfield(p, key)
+        else
+            return getproperty(p.data, key)
+        end
+    end
+
+    # Base.iterate(p::RecordObservable, i...) = iterate(p.data, i...)
+    Base.length(p::RecordObservable) = length(p.data)
+
+    function (p::RecordObservable)(iter, integrator)
+        for i in 1:length(p)
+            push!(p.data[i], p.observables[i](iter, integrator))
+        end
+
+        return integrator
+    end
+end
+```
+We can now finally record the solution as a time-series at every iteration and visualize it. (Note that it is strictly necessary to wrap the keyword argument `callback!` in paranthesis because there is an ambiguity in syntax due to a possible `!=` otherwise.)
+```{julia}
+begin
+    record_state = Callback(
+        OnIterElapsed(1),
+        RecordObservable((u=(iter, integrator) -> copy(integrator.u),))
+    )
+    solve!(dfdt!, [5.0], range(0.0, 1.0, length=100), solver=RK4Integrator, (callback!)=record_state, kick_callback)
+    plot(first.(record_state.effect.u))
+end
+```
+Perfect! Perhaps a more realistic use-case is to specify dynamical conditions that kick in at some intermediate time, for example, a random kick every `n` iterations. This can be done like so:
+
+```{julia}
+begin
+    kick_callback = Callback(
+        OnIterElapsed(20),
+        (iter, integrator) -> integrator.u[1] += (2 * rand() - 1),
+    )
+    solve!(dfdt!, [5.0], range(0.0, 1.0, length=100), solver=RK4Integrator, (callback!)=CallbackList([record_state, kick_callback]))
+    plot(first.(record_state.effect.u))
+end
+```
+I think is quite a nice example of why the callback pattern allows modularity and extensibility for the user with no need to poke into the internals of the core solver loop. It should be noted that design patterns such as this one tend to quickly ramp up in complexity and the overhead introduced both in compilation time and developer maintanence time can often outweigh its usefulness. So its important to keep your specific use-case in mind and try to use them sparingly only when strictly required.
