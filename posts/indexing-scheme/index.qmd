@@ -1,7 +1,7 @@
 ---
 title: "Linearly indexing a 2D grid"
 author: "Akshay Shankar"
-date: "2025-05-01"
+date: "2024-09-15"
 categories: [tidbit, number theory]
 ---
 

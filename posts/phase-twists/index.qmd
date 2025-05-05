@@ -1,0 +1,9 @@
+---
+title: "Superfluidity as a response to phase twists"
+author: "Akshay Shankar"
+date: "2025-05-05"
+categories: [tidbit, bec]
+image: "BEC.png"
+---
+
+# Work in progress!

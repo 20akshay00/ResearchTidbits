@@ -1,7 +1,7 @@
 ---
 title: "Automating image cropping"
 author: "Akshay Shankar, Dhruva Sambrani"
-date: "2025-05-04"
+date: "2023-11-21"
 categories: [tidbit, code, bec]
 image: "BEC.png"
 ---

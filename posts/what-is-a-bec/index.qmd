@@ -1,0 +1,23 @@
+---
+title: "What is a BEC"
+author: "Akshay Shankar"
+date: "2025-05-05"
+categories: [tidbit, bec]
+image: "BEC.png"
+---
+
+# Work in progress!
+
+$$
+\langle \hat{\Psi}(r) \rangle \neq 0
+$$
+
+$$
+\lim_{|r-r'|\to\infty}\langle \hat{\Psi}^{\dagger}(r)\hat{\Psi}(r')\rangle = \langle \hat{\Psi}^{\dagger}(r)\rangle \langle \hat{\Psi}(r')\rangle \neq 0 
+$$
+
+$$
+\langle \hat{\Psi}^{\dagger}(r)\hat{\Psi}(r')\rangle = \sum_{i} n_i \cdot \chi_i(r)^* \chi_i(r')
+$$
+
+where $n_0=$ max $(n_i) \sim \mathcal{O}(N)$.
