@@ -2,8 +2,11 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/signal-crop/index.html",
-      "/posts/indexing-scheme/index.html"
+      "/posts/what-is-a-bec/index.html",
+      "/posts/phase-twists/index.html",
+      "/posts/callbacks/index.html",
+      "/posts/indexing-scheme/index.html",
+      "/posts/signal-crop/index.html"
     ]
   }
 ]

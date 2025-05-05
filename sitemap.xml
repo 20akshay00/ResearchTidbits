@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://20akshay00.github.io/ResearchTidbits/about.html</loc>
-    <lastmod>2025-05-04T17:34:53.819Z</lastmod>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/callbacks/index.html</loc>
+    <lastmod>2025-05-05T22:04:14.656Z</lastmod>
   </url>
   <url>
-    <loc>https://20akshay00.github.io/ResearchTidbits/posts/indexing-scheme/index.html</loc>
-    <lastmod>2025-05-04T17:34:53.819Z</lastmod>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/what-is-a-bec/index.html</loc>
+    <lastmod>2025-05-05T21:35:53.096Z</lastmod>
   </url>
   <url>
     <loc>https://20akshay00.github.io/ResearchTidbits/posts/signal-crop/index.html</loc>
-    <lastmod>2025-05-04T17:40:49.377Z</lastmod>
+    <lastmod>2025-05-05T21:48:21.266Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/ideas.html</loc>
+    <lastmod>2025-05-05T21:35:52.976Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/about.html</loc>
+    <lastmod>2025-05-05T21:35:52.976Z</lastmod>
   </url>
   <url>
     <loc>https://20akshay00.github.io/ResearchTidbits/index.html</loc>
-    <lastmod>2025-05-04T17:34:53.819Z</lastmod>
+    <lastmod>2025-05-05T21:35:52.976Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/indexing-scheme/index.html</loc>
+    <lastmod>2025-05-05T21:35:52.976Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/phase-twists/index.html</loc>
+    <lastmod>2025-05-05T21:35:52.976Z</lastmod>
   </url>
 </urlset>
