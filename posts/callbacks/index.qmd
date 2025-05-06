@@ -1,8 +1,8 @@
 ---
 title: "The callback pattern"
 author: "Akshay Shankar"
-date: "2025-05-05"
-categories: [tidbit, code]
+date: "2025-01-27"
+categories: [chunk, code]
 image: "julia.png"
 ---
 
@@ -85,12 +85,12 @@ At this point, we introduce the notion of a callback as a mutating function that
 	solve!(dfdt!, [5.], range(0., 1., length=100), solver = RK4Integrator)
 ```
 
-Note that this function only provides access to the value of `u` at the last time-step, which is a bit weird since typically we would want the evolution of the state at a time-series. While this was an artifical oversight on my part, it also provides a good opportunity to utilize callbacks to store custom data during the solver steps.
+Note that this function only provides access to the value of `u` at the last time-step, which is a bit weird since typically we would want the evolution of the state as a time-series. While this was an artifical oversight on my part, it also provides a good opportunity to utilize callbacks to store custom data during the solver steps.
 
 # The callback struct
 Generally, custom logic can be stateful (i.e, have persistent local variables) and one would need to create a closure over the function that actually performs the mutating action on the state of the integrator. However, Julia offers another alternative; namely, we can define a struct that encapsulates the data, which can then be [invoked as a function](https://docs.julialang.org/en/v1/manual/methods/#Function-like-objects) with access to this data. Since both structs and functions may be invoked by means of a function call syntax, I will generically refer to them as `callables` henceforth.
 
-In order to define a generic interface, we first need to think about what the general usecase of callbacks would be. Typically we expect that callbacks will have the specific form of evaluating whether a certain `condition` is met at the time of invocation, and if so, it performs a certain `effect` that mutates the state of the integrator. For example, we may want to save a certain variable every 10 iterations, or normalize the state whenever it deviates beyond a certain threshold, etc. So, we define a `Callback` struct as a collection of two callables; (1) `condition` with signature `(iter, integrator) -> bool` and (2) `effect` with signature `(iter, integrator) -> integrator`, although it is intended to be mutating.
+In order to define a generic interface, we first need to think about what the general use-case of callbacks would be. In the context of an integrator, we expect that callbacks will have the specific form of evaluating whether a certain `condition` is met at the time of invocation, and if so, it performs a certain `effect` that mutates the state of the integrator. For example, we may want to save a certain variable every 10 iterations, or normalize the state whenever it deviates beyond a certain threshold, etc. So, we define a `Callback` struct as a collection of two callables; (1) `condition` with signature `(iter, integrator) -> bool` and (2) `effect` with signature `(iter, integrator) -> integrator`, although it is intended to be mutating.
 
 ```{julia}
 begin
@@ -242,4 +242,7 @@ let
     plot(first.(record_state.effect.u))
 end
 ```
-I think is quite a nice example demonstrating how the callback pattern allows modularity and extensibility for the user with no need to poke into the internals of the core solver loop. However, it should be noted that design patterns such as this one tend to quickly ramp up in complexity and the overhead introduced both in compilation time and developer maintanence time can often outweigh its usefulness. So its important to keep your specific use-case in mind and try to use them sparingly only when strictly required.
+
+I think this is quite a nice example demonstrating how the callback pattern allows modularity and extensibility for the user with no need to poke into the internals of the core solver loop. However, it should be noted that design patterns such as this one tend to quickly ramp up in complexity and the overhead introduced both in compilation time and developer maintanence time can often outweigh its usefulness. So its important to keep your specific use-case in mind and try to use such constructions only when strictly required.
+
+Before we conclude, it is important to note that the example presented above is a fairly specific utilization of callbacks in the context of scientific software where one may want to inject custom logic inside a core program loop. On the other hand, the concept is also widely prevalent in video game programming and web development, typically presenting itself in the context of asynchronous programming. While the key idea still remains that the invocation of a function is deferred until some other function is completed, the resulting interfaces may take up a different form than we see here. Perhaps that is a topic for another time.

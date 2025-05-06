@@ -1,0 +1,7 @@
+---
+title: "Determining phase boundaries"
+author: "Akshay Shankar"
+date: "2023-06-01"
+categories: [tidbit, code]
+image: "julia.png"
+---

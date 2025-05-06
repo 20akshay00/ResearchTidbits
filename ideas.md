@@ -1,2 +1,3 @@
 - single particle hamiltonian from energy spectrum
 - superfluid stiffness/ rotation as an artificial gauge field
+- binary search phase boundary
