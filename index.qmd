@@ -1,5 +1,5 @@
 ---
-title: "ResearchTidbits"
+title: "/ˈtɪdbɪt/ - a small and particularly interesting item of information."
 listing:
   contents: posts
   sort: "date desc"
