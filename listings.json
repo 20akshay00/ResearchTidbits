@@ -3,11 +3,10 @@
     "listing": "/index.html",
     "items": [
       "/posts/phase-twists/index.html",
-      "/posts/what-is-a-bec/index.html",
       "/posts/callbacks/index.html",
       "/posts/linear-indexing/index.html",
       "/posts/image-crop/index.html",
-      "/posts/binary-search/index.html"
+      "/posts/phase-diagram/index.html"
     ]
   }
 ]
