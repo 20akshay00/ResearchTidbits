@@ -2,7 +2,7 @@
 title: "Superfluidity as a response to phase twists"
 author: "Akshay Shankar"
 date: "2025-05-07"
-categories: [tidbit, bec]
+categories: [chunk, theory]
 image: "HF.png"
 ---
 
