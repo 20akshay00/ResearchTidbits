@@ -68,9 +68,106 @@ $$
 
 Where $E$ is the ground state energy of the original Hamiltonian under twisted boundary conditions $\psi(r_1 + 2\pi R, \dots, r_N) = \exp(i \theta) \cdot \psi(r_1, \dots, r_N)$. We thus see that the superfluid response of a system is not really tied to rotation specifically, but rather to the resistance of the system to phase twists. If the energy remains the same under a twist, the system does not exhibit superfluidity. This notion somehow ties in nicely with our intuitive understanding that superfluidity is closely related to the phase of the system (generally the superfluid velocity can be written as the gradient of the phase of a condensate wave-function).
 
-# Why bother? 
+# Why bother?
+While at a first glance, this definition seems really abstract and not very useful, it actually opens up a lot of things to explore.
 
-Now that we have a concrete measure of an aspect of superfluidity, a very interesting question arises. When exactly does a many-body system exhibit this property? We know that a dilute Bose gas exhibits superfluidity and also forms a Bose-Einstein condensate (BEC). Similarly, we have Cooper pairs of electrons in a metal that condense in similar manner to a BEC and exhibits superconductivity. It clearly seems that superfluidity is closely related to the idea of condensation and $U(1)$ symmetry breaking. One may even be enticed to make the equivalence of the condensate fraction with the superfluid fraction of the system. However, we know for a fact that at $T=0$, He$^4$ (the first superfluid we discovered) has a superfluid fraction of $1$, but only a condensate fraction of $\sim 0.1$. On the other hand, we have superfluids in [1D](https://en.wikipedia.org/wiki/Lieb%E2%80%93Liniger_model) and [2D](https://en.wikipedia.org/wiki/Berezinskii%E2%80%93Kosterlitz%E2%80%93Thouless_transition) Bose gases despite the non-existence of a condensate. We are thus forced to accept that the relation between superfluidity and condensation is much more nuanced. Perhaps we will revisit this idea in more depth sometime.
+## A numerical proxy for superfluidity
+Numerical simulations of 1D systems readily have access to the ground state energy of the Hamiltonian. As a result, one may easily extract the superfluid fraction as defined above. We can take a quick look at this for a mean-field treatment of the Bose-Hubbard model. I directly present the code here as the accompanying explanations are detailed in a [previous post](https://20akshay00.github.io/ResearchTidbits/posts/phase-diagram/).
+
+```{julia}
+#| echo: false
+using Pkg
+Pkg.activate(".")
+using Plots, LinearAlgebra
+theme(:dao)
+```
+
+```{julia}
+# cutoff necessary since bosonic space is infinite dimensional
+mean_field_ops(nmax) = (diagm(1 => sqrt.(1:nmax)), diagm(0 => 0:nmax))
+
+BHM(â, n̂; t, mu, psi, U=1.0) = -mu * n̂ + 0.5 * U * n̂ * (n̂ - I) - 2t * psi * (â + â') + 2t * psi^2 * I
+
+function solve(â, n̂, H; atol=1e-8, callback=identity)
+    # initial guess
+    state = rand(eltype(â), size(â, 1))
+    psi = state' * â * state
+    psi_old = psi
+
+    while true
+        ## f(psi)
+        state = eigvecs(H(psi))[:, 1]
+        state ./= sqrt(norm(state))
+        psi = state' * â * state
+        ##
+
+        # check convergence
+        (norm(psi - psi_old) < atol) && break
+        psi_old = psi
+
+        # for injecting other custom logic later on; by default it does nothing
+        callback(psi)
+    end
+
+    return state, psi
+end
+
+solve(â, n̂; t, mu, atol=1e-8) = solve(â, n̂, psi -> BHM(â, n̂, t=t, mu=mu, psi=psi), atol=atol)
+```
+We now add a simple function to compute the second derivative of the energy under a phase twist using a finite-difference scheme. 
+
+```{julia}
+function superfluid_density(â, n̂, t, mu; atol = 1e-8, ϵ=1e-8)
+    Htwist(ϕ) = psi -> BHM(â, n̂, t=t*cos(ϕ), mu=mu, psi=psi)
+    function Etwist(ϕ)
+        state, psi = solve(â, n̂, Htwist(ϕ), atol = atol)
+        energy = state' * Htwist(ϕ)(psi) * state
+    end
+
+    return (Etwist(ϵ) - 2 * Etwist(0) + Etwist(-ϵ))/ϵ^2
+end
+```
+
+We then compare the phase diagram plotted using the order parameter $\langle \hat a \rangle$ (the first plot) and the superfluid density $\rho_s$ (the second plot).
+
+```{julia}
+#| echo: false
+let
+	â, n̂ = mean_field_ops(4)
+	npoints = 50
+	ts = range(0., 0.12, npoints)
+	mus = range(0., 3., npoints)
+	res = zeros(length(mus), length(ts))
+	
+	Threads.@threads for idx in CartesianIndices(res)
+		H = psi -> BHM(â, n̂, t=ts[idx.I[2]], mu=mus[idx.I[1]], psi=psi)
+		_, res[idx] = solve(â, n̂, H)
+	end
+
+	heatmap(ts, mus, res)
+end
+```
+
+```{julia}
+#| echo: false
+let
+	â, n̂ = mean_field_ops(4)
+	npoints = 50
+	ts = range(0., 0.12, npoints)
+	mus = range(0., 3., npoints)
+	res = zeros(length(mus), length(ts))
+	
+	Threads.@threads for idx in CartesianIndices(res)
+		res[idx] = superfluid_density(â, n̂, ts[idx.I[2]], mus[idx.I[1]], ϵ=1e-6)
+	end
+
+	heatmap(ts, mus, res)
+end
+```
+We see that the superfluid density drops to zero exactly in the Mott insulator lobes!
+
+## A criteria for many-body systems
+Now for a more theoretical perspective; having a concrete measure of an aspect of superfluidity immediately raises a very interesting question. When exactly does a many-body system exhibit this property? We know that a dilute Bose gas exhibits superfluidity and also forms a Bose-Einstein condensate (BEC). Similarly, we have Cooper pairs of electrons in a metal that condense in similar manner to a BEC and exhibits superconductivity. It clearly seems that superfluidity is closely related to the idea of condensation and $U(1)$ symmetry breaking. One may even be enticed to make the equivalence of the condensate fraction with the superfluid fraction of the system. However, we know for a fact that at $T=0$, He$^4$ (the first superfluid we discovered) has a superfluid fraction of $1$, but only a condensate fraction of $\sim 0.1$. On the other hand, we have superfluids in [1D](https://en.wikipedia.org/wiki/Lieb%E2%80%93Liniger_model) and [2D](https://en.wikipedia.org/wiki/Berezinskii%E2%80%93Kosterlitz%E2%80%93Thouless_transition) Bose gases despite the non-existence of a condensate. We are thus forced to accept that the relation between superfluidity and condensation is much more nuanced. Perhaps we will revisit this idea in more depth sometime.
 
 
 ### References
