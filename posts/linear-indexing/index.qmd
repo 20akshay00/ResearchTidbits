@@ -2,7 +2,7 @@
 title: "Linearly indexing a 2D grid"
 author: "Akshay Shankar"
 date: "2024-09-15"
-categories: [tidbit, number theory]
+categories: [nibble, number theory]
 ---
 
 Recently, I had to write an exact diagonalization routine to solve for the ground state of a system of interacting bosons in the continuum. Generally this simply involves choosing a single-particle basis set, $\{\phi_i(\vec{r})\}|_{i=1}^N$ such that a many-particle basis set may be constructed by enumerating the Fock states, $\{\ket{n_1, n_2, \dots, n_N}\}$ respecting the bosonic/fermionic symmetry. These states can then be utilized to explicitly construct the Hamiltonian by computing its matrix elements. 

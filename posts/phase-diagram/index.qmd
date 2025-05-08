@@ -2,7 +2,7 @@
 title: "Determining phase boundaries"
 author: "Akshay Shankar"
 date: "2023-06-01"
-categories: [chunk, code]
+categories: [tidbit, code]
 image: "phase_diagram.png"
 ---
 
