@@ -149,7 +149,7 @@ function plot_phase_twist_response(t, mu; nmax = 5, twist_angles = range(-π/2, 
     plot!(xlabel = "Phase twist", ylabel = "E(ϕ) - E(0)", title = "\nVariation of energy with phase twist")
 
     p2 = bar(0:length(state)-1, state, lab = "")
-    plot!(xlabel = "Particle number", ylabel = "|Coefficient|²    ", title = "\nGround state distribution", ylims = (0, 1.05))
+    plot!(xlabel = "Particle number", ylabel = "|Coefficient|^2", title = "\nGround state distribution", ylims = (0, 1.05))
 
     phase = (twist_energies[10] ≈ twist_energies[1]) ? "Mott Insulator" : "Superfluid"
     
