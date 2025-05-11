@@ -69,7 +69,7 @@ $$
 Where $E$ is the ground state energy of the original Hamiltonian under twisted boundary conditions $\psi(r_1 + 2\pi R, \dots, r_N) = \exp(i \theta) \cdot \psi(r_1, \dots, r_N)$. We thus see that the superfluid response of a system is not really tied to rotation specifically, but rather to the resistance of the system to phase twists. If the energy remains the same under a twist, the system does not exhibit superfluidity. This notion somehow ties in nicely with our intuitive understanding that superfluidity is closely related to the phase of the system (generally the superfluid velocity can be written as the gradient of the phase of a condensate wave-function).
 
 # Why bother?
-While at a first glance, this definition seems really abstract and not very useful, it actually opens up a lot of things to explore.
+While at a first glance, this definition seems really abstract and not very useful, it actually opens up a lot of things to explore. We now consider a few possibilities.
 
 ## A numerical proxy for superfluidity
 Numerical simulations of 1D systems readily have access to the ground state energy of the Hamiltonian. As a result, one may easily extract the superfluid fraction as defined above. We can take a quick look at this for a mean-field treatment of the Bose-Hubbard model. I directly present the code here as the accompanying explanations are detailed in a [previous post](https://20akshay00.github.io/ResearchTidbits/posts/phase-diagram/).
@@ -114,21 +114,54 @@ end
 
 solve(â, n̂; t, mu, atol=1e-8) = solve(â, n̂, psi -> BHM(â, n̂, t=t, mu=mu, psi=psi), atol=atol)
 ```
-We now add a simple function to compute the second derivative of the energy under a phase twist using a finite-difference scheme. 
+We now add a simple function to compute the second derivative of the energy under a phase twist using a finite-difference scheme. Note that since we work directly in the thermodynamic limit, it is a bit finicky to work with conditions on the boundaries. Instead, we may consider applying $\hat{a}_m \to \hat{a}_m e^{i m \phi}$ on each site of the original Hamiltonian. This preserves the translation invariance of the system and is equivalent to applying a phase twist of $\theta = L\phi$ at the boundaries, where $L \to \infty$ is the length of the chain. At the level of the mean-field treatment, this can be implemented as $t \to 2t\cos\phi$ on the mean-field Hamiltonian.
 
 ```{julia}
-function superfluid_density(â, n̂, t, mu; atol = 1e-8, ϵ=1e-8)
-    Htwist(ϕ) = psi -> BHM(â, n̂, t=t*cos(ϕ), mu=mu, psi=psi)
-    function Etwist(ϕ)
-        state, psi = solve(â, n̂, Htwist(ϕ), atol = atol)
-        energy = state' * Htwist(ϕ)(psi) * state
-    end
+function energy_on_twist(â, n̂; t, mu, ϕ, atol = 1e-8)
+    BHMtwist(ϕ) = psi -> BHM(â, n̂, t=t*cos(ϕ), mu=mu, psi=psi)
 
-    return (Etwist(ϵ) - 2 * Etwist(0) + Etwist(-ϵ))/ϵ^2
+    state, psi = solve(â, n̂, BHMtwist(ϕ), atol = atol)
+    energy = state' * BHMtwist(ϕ)(psi) * state
+    return energy
+end
+
+function superfluid_density(â, n̂; t, mu, ϵ=1e-8)
+    # in principle since ϵ(-0) = ϵ(0), one could avoid re-computing the last term
+    return (
+        energy_on_twist(â, n̂, ϕ = ϵ, t = t, mu = mu) -
+        2 * energy_on_twist(â, n̂, ϕ = 0, t = t, mu = mu) + 
+        energy_on_twist(â, n̂, ϕ = -ϵ, t = t, mu = mu)
+        ) / ϵ^2
 end
 ```
 
-We then compare the phase diagram plotted using the order parameter $\langle \hat a \rangle$ (the first plot) and the superfluid density $\rho_s$ (the second plot).
+Let us now check how the energy varies with the magnitude of the phase twist in each phase of the system.
+
+```{julia}
+let
+function plot_phase_twist_response(t, mu; nmax = 5, twist_angles = range(-π/2, π/2, length=50))
+    â, n̂ = mean_field_ops(nmax)
+    state, Egs = solve(â, n̂, t=t, mu=mu)
+    twist_energies = map(ϕ -> energy_on_twist(â, n̂, t=t, mu=mu, ϕ = ϕ), twist_angles)
+    
+    p1 = plot(twist_angles, twist_energies .- Egs, lab="", lw=3)
+    plot!(xlabel = "Phase twist", ylabel = "E(ϕ) - E(0)", title = "\nVariation of energy with phase twist")
+
+    p2 = bar(0:length(state)-1, state, lab = "")
+    plot!(xlabel = "Particle number", ylabel = "Coefficient", title = "\nGround state distribution", ylims = (0, 1.05))
+
+    phase = (twist_energies[10] ≈ twist_energies[1]) ? "Mott Insulator" : "Superfluid"
+    
+    plot(p1, p2, size = (1000, 400), framestyle=:box, margins=10Plots.mm, suptitle = "        (t=$t | μ=$mu | $phase)", suptitlefontsize = 2)
+end
+
+display(plot_phase_twist_response(0.01, 0.5))
+display(plot_phase_twist_response(0.3, 0.5))
+end
+```
+
+We see that the energy does not vary with the phase twist in the Mott insulator phase, whereas it has a quadratic dependance in the superfluid phase. 
+This corresponds exactly with our interpretation of the superfluid density (note that there is no linear dependance because there is no spontaneous breaking of time reversal symmetry, so we must have $\epsilon(-\phi) = \epsilon(\phi)$). We can now compare the phase diagram plotted using the order parameter $\langle \hat a \rangle$ and the superfluid density $\rho_s$.
 
 ```{julia}
 #| echo: false
@@ -145,6 +178,7 @@ let
 	end
 
 	heatmap(ts, mus, res)
+    plot!(xlabel = "Hopping strength (t/U)", ylabel = "Chemical potential (μ/U)", colorbar_title="\nOrder parameter")
 end
 ```
 
@@ -158,13 +192,14 @@ let
 	res = zeros(length(mus), length(ts))
 	
 	Threads.@threads for idx in CartesianIndices(res)
-		res[idx] = superfluid_density(â, n̂, ts[idx.I[2]], mus[idx.I[1]], ϵ=1e-6)
+		res[idx] = superfluid_density(â, n̂, t=ts[idx.I[2]], mu=mus[idx.I[1]], ϵ=1e-6)
 	end
 
 	heatmap(ts, mus, res)
+    plot!(xlabel = "Hopping strength (t/U)", ylabel = "Chemical potential (μ/U)", colorbar_title="\nSuperfluid fraction")
 end
 ```
-We see that the superfluid density drops to zero exactly in the Mott insulator lobes!
+The superfluid density drops to zero exactly in the Mott insulator lobes! Further, we note that the transition is continuous as one would expect since the superfluid density should slowly fall off as the depth of the optical lattice is increased.
 
 ## A criteria for many-body systems
 Now for a more theoretical perspective; having a concrete measure of an aspect of superfluidity immediately raises a very interesting question. When exactly does a many-body system exhibit this property? We know that a dilute Bose gas exhibits superfluidity and also forms a Bose-Einstein condensate (BEC). Similarly, we have Cooper pairs of electrons in a metal that condense in similar manner to a BEC and exhibits superconductivity. It clearly seems that superfluidity is closely related to the idea of condensation and $U(1)$ symmetry breaking. One may even be enticed to make the equivalence of the condensate fraction with the superfluid fraction of the system. However, we know for a fact that at $T=0$, He$^4$ (the first superfluid we discovered) has a superfluid fraction of $1$, but only a condensate fraction of $\sim 0.1$. On the other hand, we have superfluids in [1D](https://en.wikipedia.org/wiki/Lieb%E2%80%93Liniger_model) and [2D](https://en.wikipedia.org/wiki/Berezinskii%E2%80%93Kosterlitz%E2%80%93Thouless_transition) Bose gases despite the non-existence of a condensate. We are thus forced to accept that the relation between superfluidity and condensation is much more nuanced. Perhaps we will revisit this idea in more depth sometime.
