@@ -141,14 +141,15 @@ Let us now check how the energy varies with the magnitude of the phase twist in 
 let
 function plot_phase_twist_response(t, mu; nmax = 5, twist_angles = range(-π/2, π/2, length=50))
     â, n̂ = mean_field_ops(nmax)
-    state, Egs = solve(â, n̂, t=t, mu=mu)
+    state, psi = solve(â, n̂, t=t, mu=mu)
+    Egs = state' * BHM(â, n̂, t=t, mu=mu, psi=psi) * state
     twist_energies = map(ϕ -> energy_on_twist(â, n̂, t=t, mu=mu, ϕ = ϕ), twist_angles)
     
     p1 = plot(twist_angles, twist_energies .- Egs, lab="", lw=3)
     plot!(xlabel = "Phase twist", ylabel = "E(ϕ) - E(0)", title = "\nVariation of energy with phase twist")
 
     p2 = bar(0:length(state)-1, state, lab = "")
-    plot!(xlabel = "Particle number", ylabel = "Coefficient", title = "\nGround state distribution", ylims = (0, 1.05))
+    plot!(xlabel = "Particle number", ylabel = "|Coefficient|²    ", title = "\nGround state distribution", ylims = (0, 1.05))
 
     phase = (twist_energies[10] ≈ twist_energies[1]) ? "Mott Insulator" : "Superfluid"
     
@@ -170,6 +171,8 @@ let
 	npoints = 50
 	ts = range(0., 0.12, npoints)
 	mus = range(0., 3., npoints)
+
+	## order parameter
 	res = zeros(length(mus), length(ts))
 	
 	Threads.@threads for idx in CartesianIndices(res)
@@ -177,18 +180,10 @@ let
 		_, res[idx] = solve(â, n̂, H)
 	end
 
-	heatmap(ts, mus, res)
-    plot!(xlabel = "Hopping strength (t/U)", ylabel = "Chemical potential (μ/U)", colorbar_title="\nOrder parameter")
-end
-```
+	p1 = heatmap(ts, mus, res)
+    plot!(xlabel = "Hopping strength (t/U)", ylabel = "Chemical potential (μ/U)", title="\nOrder parameter")
 
-```{julia}
-#| echo: false
-let
-	â, n̂ = mean_field_ops(4)
-	npoints = 50
-	ts = range(0., 0.12, npoints)
-	mus = range(0., 3., npoints)
+	## superfluid fraction
 	res = zeros(length(mus), length(ts))
 	
 	Threads.@threads for idx in CartesianIndices(res)
@@ -196,10 +191,12 @@ let
 	end
 
 	heatmap(ts, mus, res)
-    plot!(xlabel = "Hopping strength (t/U)", ylabel = "Chemical potential (μ/U)", colorbar_title="\nSuperfluid fraction")
+    p2 = plot!(xlabel = "Hopping strength (t/U)", ylabel = "Chemical potential (μ/U)", title="\nSuperfluid fraction")
+
+	plot(p1, p2, size=(1000, 350), margins = 7.5Plots.mm)
 end
 ```
-The superfluid density drops to zero exactly in the Mott insulator lobes! Further, we note that the transition is continuous as one would expect since the superfluid density should slowly fall off as the depth of the optical lattice is increased.
+The superfluid density drops to zero exactly in the Mott insulator lobes! Further, we note that the transition is continuous as one would expect since the superfluid density should slowly vanish as the depth of the optical lattice is increased.
 
 ## A criteria for many-body systems
 Now for a more theoretical perspective; having a concrete measure of an aspect of superfluidity immediately raises a very interesting question. When exactly does a many-body system exhibit this property? We know that a dilute Bose gas exhibits superfluidity and also forms a Bose-Einstein condensate (BEC). Similarly, we have Cooper pairs of electrons in a metal that condense in similar manner to a BEC and exhibits superconductivity. It clearly seems that superfluidity is closely related to the idea of condensation and $U(1)$ symmetry breaking. One may even be enticed to make the equivalence of the condensate fraction with the superfluid fraction of the system. However, we know for a fact that at $T=0$, He$^4$ (the first superfluid we discovered) has a superfluid fraction of $1$, but only a condensate fraction of $\sim 0.1$. On the other hand, we have superfluids in [1D](https://en.wikipedia.org/wiki/Lieb%E2%80%93Liniger_model) and [2D](https://en.wikipedia.org/wiki/Berezinskii%E2%80%93Kosterlitz%E2%80%93Thouless_transition) Bose gases despite the non-existence of a condensate. We are thus forced to accept that the relation between superfluidity and condensation is much more nuanced. Perhaps we will revisit this idea in more depth sometime.
