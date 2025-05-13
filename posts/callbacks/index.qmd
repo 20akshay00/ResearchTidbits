@@ -85,12 +85,29 @@ At this point, we introduce the notion of a callback as a mutating function that
 	solve!(dfdt!, [5.], range(0., 1., length=100), solver = RK4Integrator)
 ```
 
-Note that this function only provides access to the value of `u` at the last time-step, which is a bit weird since typically we would want the evolution of the state as a time-series. While this was an artifical oversight on my part, it also provides a good opportunity to utilize callbacks to store custom data during the solver steps.
+Note that this function only provides access to the value of `u` at the last time-step, which is a bit weird since typically we would want the evolution of the state as a time-series. While this was an oversight on my part, it also provides a good opportunity to utilize callbacks to store custom data during the solver steps. In order to do this, we may simply create a callback function like so. (Note that it is strictly necessary to wrap the keyword argument `callback!` in parenthesis because there is an ambiguity in syntax due to a possible `!=` otherwise.)
+
+```{julia}
+# we construct the callback inside another function to create a closure over `data` instead of leaving it as a global variable (which would degrade performance!)
+function create_saving_callback()
+    data = []
+    saving_callback = (iter, integrator) -> push!(data, integrator.u[1])
+    return data, saving_callback
+end
+
+data, saving_callback = create_saving_callback()
+solve!(dfdt!, [5.], range(0., 1., length=100), solver = RK4Integrator, (callback!)=saving_callback)
+plot(data)
+```
+
+This works perfectly fine and is exactly what one would (should?) do for personal code! However, this is not a very modular approach. If the goal is to build a package with an intuitive and flexible user-facing API, we can build upon this a lot more to account for common use-cases. Let us see a possible way to achieve this.
+
+## A small aside
+Generally, custom logic can be stateful (i.e, have persistent local variables) and one would need to create a [closure](https://en.wikipedia.org/wiki/Closure_(computer_programming)) over the function that actually performs the mutating action on the state of the integrator (just like we did above). However, Julia offers another alternative; namely, we can define a struct that encapsulates the data, which can then be [invoked as a function](https://docs.julialang.org/en/v1/manual/methods/#Function-like-objects) with access to this data. Since both structs and functions may be invoked by means of a function call syntax, I will generically refer to them as `callables` henceforth.
 
 # The callback struct
-Generally, custom logic can be stateful (i.e, have persistent local variables) and one would need to create a [closure](https://en.wikipedia.org/wiki/Closure_(computer_programming)) over the function that actually performs the mutating action on the state of the integrator. However, Julia offers another alternative; namely, we can define a struct that encapsulates the data, which can then be [invoked as a function](https://docs.julialang.org/en/v1/manual/methods/#Function-like-objects) with access to this data. Since both structs and functions may be invoked by means of a function call syntax, I will generically refer to them as `callables` henceforth.
 
-In order to define a generic interface, we first need to think about what the general use-case of callbacks would be. In the context of an integrator, we expect that callbacks will have the specific form of evaluating whether a certain `condition` is met at the time of invocation, and if so, it performs a certain `effect` that mutates the state of the integrator. For example, we may want to save a certain variable every 10 iterations, or normalize the state whenever it deviates beyond a certain threshold, etc. So, we define a `Callback` struct as a collection of two callables; (1) `condition` with signature `(iter, integrator) -> bool` and (2) `effect` with signature `(iter, integrator) -> integrator`, although it is intended to be mutating.
+In order to define a generic interface, we first need to think about what the general use-case of callbacks would be. In the context of an integrator, we expect that callbacks will always have the specific form of evaluating whether a certain `condition` is met at the time of invocation, and if so, it performs a certain `effect` that may mutate the state of the integrator. For example, we may want to compute and save a certain quantity every iteration, or normalize the state whenever it deviates beyond a certain threshold, or apply a periodic perturbation every 10 iterations, etc. So, we define a `Callback` struct as a collection of two callables; (1) `condition` with signature `(iter, integrator) -> bool` and (2) `effect` with signature `(iter, integrator) -> integrator`, although it can be mutating as well.
 
 ```{julia}
 begin
@@ -101,12 +118,9 @@ begin
 	    effect::E
 	end
 	
-	condition(p::Callback) = p.condition
-	effect(p::Callback) = p.effect
-	
 	function (p::Callback)(iter, integrator)
-	    if condition(p)(iter, integrator)
-	        effect(p)(iter, integrator)
+	    if p.condition(iter, integrator)
+	        p.effect(iter, integrator)
 	    end
 	
 	    return integrator
@@ -132,7 +146,9 @@ begin
     Base.length(p::CallbackList) = length(p.callbacks)
 end
 ```
-Now that the basic structure is in place, let us implement some common `condition`s. Again, these don't _have_ to be structs, but since the specific use-cases here require statefulness, they are an appropriate choice. Note that we have not placed explicit safegaurds to statically check whether the function call has the right signature, so the program would fail at run-time if the signature does not match what is expected.
+
+# Some common conditions and effects
+Now that the basic structure is in place, let us implement some `condition`s that may be required quite often. Again, these don't _have_ to be structs, but since the specific use-cases here require statefulness, they are an appropriate choice. Note that we have not placed explicit safegaurds to statically check whether the function call has the right signature, so the program would fail at run-time if the signature does not match what is expected.
 ```{julia}
 begin
     # trigger every n iterations
@@ -176,7 +192,7 @@ begin
     (p::OnRealTimeElapsed)(iter, state, H, envs) = ((time() - p.start_tick) > p.save_freq) ? (p.start_tick = time(); true) : false
 end
 ```
-We now define a generic `effect` that simply computes some specified observables using the integrator state. We do so by defining a struct `RecordObservable` which expects an input `recipe` which is a named tuple of pairs like (`name`, `function to compute observable`). For example; `(norm = (iter, integrator) -> norm(integrator.u), iter = (iter, integrator) -> iter)`. It then stores the result in `data` whenever the `condition` of its parent `Callback` returns `true`. While this is a trivial example, it may be quite useful if there is some internal integrator state (which is not simply the solution `u`) that must be tracked.
+We now define a generic `effect` that simply computes some specified observables using the integrator state. We do so by defining a struct `RecordObservable` which expects an input `recipe` which is a named tuple containing a collection of (`observable_name` = `function_to_compute_observable`). For example; `(norm = (iter, integrator) -> norm(integrator.u), iter = (iter, integrator) -> iter)`. It then stores the result in `data` whenever the `condition` of its parent `Callback` returns `true`. While this is a trivial example, it may be quite useful if there is some non-trivial internal integrator state that must be tracked.
 
 ```{julia}
 begin
@@ -214,32 +230,38 @@ begin
     end
 end
 ```
-We can now finally record the solution as a time-series at every iteration and visualize it. (Note that it is strictly necessary to wrap the keyword argument `callback!` in parenthesis because there is an ambiguity in syntax due to a possible `!=` otherwise.)
+Having done this, we can now once again visualize the solution as a time-series at every iteration.
 ```{julia}
 let
     record_state = Callback(
         OnIterElapsed(1),
-        RecordObservable((u=(iter, integrator) -> copy(integrator.u),))
+        RecordObservable((u=(iter, integrator) -> integrator.u[1],))
     )
     solve!(dfdt!, [5.0], range(0.0, 1.0, length=100), solver=RK4Integrator, (callback!)=record_state)
-    plot(first.(record_state.effect.u))
+    plot(record_state.effect.u)
 end
 ```
-Perfect! Perhaps a more realistic use-case is to specify dynamical conditions that kick in at some intermediate time, for example, a random kick every `n` iterations. This can be done like so:
+Perfect! While it may seem that we introduced a ton of machinery for no reason, we have effectively removed the boilerplate for common tasks such as the condition-effect structure and data saving. The work we put into this allows us to write clean and intuitive code when we want to do more things within a callback. Perhaps a realistic use-case is to specify dynamical conditions that kick in at some intermediate time, for example, a random kick every `n` iterations. We could also constrain the solution from going below a certain threshold.
 
 ```{julia}
 let
     record_state = Callback(
         OnIterElapsed(1),
-        RecordObservable((u=(iter, integrator) -> copy(integrator.u),))
+        RecordObservable((u=(iter, integrator) -> integrator.u[1],))
+    )
+
+    hardwall_callback = Callback(
+        (iter, integrator) -> integrator.u[1] < 1.,
+        (iter, integrator) -> integrator.u[1] = 1.,
     )
 
     kick_callback = Callback(
-        OnIterElapsed(20),
-        (iter, integrator) -> integrator.u[1] += (2 * rand() - 1),
+        OnIterElapsed(30),
+        (iter, integrator) -> integrator.u[1] += rand(),
     )
-    solve!(dfdt!, [5.0], range(0.0, 1.0, length=100), solver=RK4Integrator, (callback!)=CallbackList([record_state, kick_callback]))
-    plot(first.(record_state.effect.u))
+
+    solve!(dfdt!, [5.0], range(0.0, 1.0, length=100), solver=RK4Integrator, (callback!)=CallbackList([record_state, hardwall_callback, kick_callback]))
+    plot(record_state.effect.u, ylims = [0., 5.1])
 end
 ```
 
