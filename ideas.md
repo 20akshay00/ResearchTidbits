@@ -1,7 +1,5 @@
 - single particle hamiltonian from energy spectrum
-- superfluid stiffness/ rotation as an artificial gauge field
-- binary search phase boundary
 - what is a BEC? is U(1) SSB strictly necessary?
 - DVR/gaussian quadrature (root finding via diagonalization.)
 - finite state machines (enemy behaviour/MPO construction)
-- Compute superfluid fraction for mean field BHM? use AD?
+- Why does bogoliubov spectrum of quantum hamiltonian match exactly with linear excitations of the time dependant GPE which is entirely mean-field?
