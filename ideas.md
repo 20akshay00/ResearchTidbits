@@ -3,3 +3,4 @@
 - DVR/gaussian quadrature (root finding via diagonalization.)
 - finite state machines (enemy behaviour/MPO construction)
 - Why does bogoliubov spectrum of quantum hamiltonian match exactly with linear excitations of the time dependant GPE which is entirely mean-field?
+- imaginary time evolution as a gradient descent with a non trivial metric
