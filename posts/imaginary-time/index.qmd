@@ -1,0 +1,16 @@
+---
+title: "Imaginary time evolution"
+author: "Akshay Shankar"
+date: "2025-06-03"
+categories: [chunk, quantum, code]
+---
+
+$i \hbar \partial_t \Psi = -\frac{\partial^2}{\partial x^2} \Psi$
+
+```{julia}
+
+```
+
+```{julia}
+
+```
