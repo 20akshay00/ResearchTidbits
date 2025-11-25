@@ -2,9 +2,13 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/bogoliubov-transformations/index.html",
+      "/posts/localized-basis/index.html",
+      "/posts/imaginary-time/index.html",
       "/posts/phase-twists/index.html",
       "/posts/callbacks/index.html",
       "/posts/linear-indexing/index.html",
+      "/posts/composite-bosons/index.html",
       "/posts/image-crop/index.html",
       "/posts/phase-diagram/index.html"
     ]

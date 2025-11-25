@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://20akshay00.github.io/ResearchTidbits/posts/linear-indexing/index.html</loc>
-    <lastmod>2025-05-11T07:19:55.379Z</lastmod>
-  </url>
-  <url>
-    <loc>https://20akshay00.github.io/ResearchTidbits/posts/image-crop/index.html</loc>
-    <lastmod>2025-05-11T07:19:55.219Z</lastmod>
-  </url>
-  <url>
-    <loc>https://20akshay00.github.io/ResearchTidbits/posts/phase-diagram/index.html</loc>
-    <lastmod>2025-05-11T07:19:55.379Z</lastmod>
-  </url>
-  <url>
     <loc>https://20akshay00.github.io/ResearchTidbits/ideas.html</loc>
-    <lastmod>2025-05-11T07:19:55.219Z</lastmod>
-  </url>
-  <url>
-    <loc>https://20akshay00.github.io/ResearchTidbits/about.html</loc>
-    <lastmod>2025-05-11T07:19:55.219Z</lastmod>
+    <lastmod>2025-11-07T20:34:17.658Z</lastmod>
   </url>
   <url>
     <loc>https://20akshay00.github.io/ResearchTidbits/index.html</loc>
-    <lastmod>2025-05-11T07:19:55.219Z</lastmod>
+    <lastmod>2025-07-18T09:00:27.509Z</lastmod>
   </url>
   <url>
-    <loc>https://20akshay00.github.io/ResearchTidbits/posts/phase-twists/index.html</loc>
-    <lastmod>2025-05-11T08:52:53.867Z</lastmod>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/phase-diagram/index.html</loc>
+    <lastmod>2025-07-18T09:00:27.511Z</lastmod>
   </url>
   <url>
     <loc>https://20akshay00.github.io/ResearchTidbits/posts/callbacks/index.html</loc>
-    <lastmod>2025-05-13T18:59:43.297Z</lastmod>
+    <lastmod>2025-07-18T09:00:27.509Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/image-crop/index.html</loc>
+    <lastmod>2025-07-18T09:00:27.510Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/imaginary-time/index.html</loc>
+    <lastmod>2025-07-18T09:00:27.510Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/localized-basis/index.html</loc>
+    <lastmod>2025-09-25T10:24:48.934Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/bogoliubov-transformations/index.html</loc>
+    <lastmod>2025-11-25T11:34:58.569Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/linear-indexing/index.html</loc>
+    <lastmod>2025-07-18T09:00:27.511Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/composite-bosons/index.html</loc>
+    <lastmod>2025-07-18T09:00:27.509Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/posts/phase-twists/index.html</loc>
+    <lastmod>2025-07-18T09:00:27.512Z</lastmod>
+  </url>
+  <url>
+    <loc>https://20akshay00.github.io/ResearchTidbits/about.html</loc>
+    <lastmod>2025-07-18T09:00:27.508Z</lastmod>
   </url>
 </urlset>

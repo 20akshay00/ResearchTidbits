@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Akshay Shankar">
+<meta name="dcterms.date" content="2025-11-25">
 
-<title>About – ResearchTidbits</title>
+<title>Bogoliubov transformations – ResearchTidbits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,22 +25,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7e85070ab2d6641e99d95624d876f07d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7e85070ab2d6641e99d95624d876f07d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,18 +70,47 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">ResearchTidbits</span>
     </a>
   </div>
@@ -89,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./about.html" aria-current="page"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -110,45 +142,114 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Bogoliubov transformations</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">tidbit</div>
+                <div class="quarto-category">theory</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Akshay Shankar </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 25, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<div class="quarto-about-jolla">
-  <img src="profile.png" class="about-image
-  round " style="height: 15em; width: 15em;">
- <header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">About</h1>
-</div>
-<div class="quarto-title-meta">
-  </div>
-</header><main class="content" id="quarto-document-content">
-<p>Hi! I’m Akshay, a PhD student at <a href="https://quantumghent.github.io/">QuantumGroup@UGent</a> with an interest in the exotic physics of Bose-Einstein condensates and programming. I am currently working on utilizing Tensor Network techniques to study BEC systems in the context of quantum simulation experiments. When I’m not performing research, I enjoy <a href="https://20akshay00.itch.io/">making games</a> with the <a href="https://godotengine.org/">Godot engine</a>. You can find out more about the things I work on in my <a href="https://20akshay00.github.io">main website</a>.</p>
-<p>Over the past year, I’ve found that my research seems to involve solving many tiny problems which have <em>some</em> insight to offer but not enough to share in any usual platforms of scientific discourse. As an attempt to preserve these tidbits from fading into obscurity as I inevitably forget about them, I have begun documenting them here.</p>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
-</main> 
-  <hr class="about-sep">
-   <div class="about-links">
-  <a href="https://twitter.com/20akshay00" class="about-link" rel="" target="">
-    <i class="bi bi-twitter"></i>
-     <span class="about-link-text">Twitter</span>
-  </a>
-  <a href="https://linkedin.com/20akshay00" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="https://github.com/20akshay00" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">Github</span>
-  </a>
-</div>
-</div>
- <!-- /main -->
+
+
+
+<p>Consider a set of <span class="math inline">\(N\)</span> second-quantized creation operators <span class="math display">\[\vec{a} = [\hat{a}_1, \hat{a}_2, \cdots, \hat{a}_N]\]</span> which satisfy the canonical (anti-)commutation relations (CCR), <span class="math display">\[[\hat{a}_i, \hat{a}_j^{\dagger}]_{\pm} = \delta_{ij},\]</span> depending on whether they describe bosons or fermions. Suppose we are interested in a system described by a Hamiltonian that is quadratic in these operators, <span class="math inline">\(H=\sum_{ij} \hat{a}_i^{\dagger}​h_{ij}\hat{​a}_j​ + \frac{1}{2} ​\hat{a}_i^{\dagger}​\Delta_{ij}​\hat{a}^{\dagger}​+\frac{1}{2}​\hat{a}_i ​\Delta_{ij}^* \hat{a}_j​\)</span>. Generically, this may be cast into a matrix equation like so (upto some constant terms),</p>
+<p><span class="math display">\[
+H = \frac{1}{2}
+\begin{bmatrix} \vec{a}^\dagger &amp; \vec{a} \end{bmatrix}
+\begin{bmatrix}
+h &amp;\Delta \\
+\pm \Delta^{\dagger} &amp; \pm h^{T}
+\end{bmatrix}
+\begin{bmatrix} \vec{a} \\ \vec{a}^\dagger \end{bmatrix} = \frac{1}{2} \vec{A}^{\dagger} H_{BdG} \vec{A},
+\]</span> where <span class="math inline">\(h\)</span> is generally an <span class="math inline">\(N \times N\)</span> Hermitian matrix and <span class="math inline">\(\Delta\)</span> is an <span class="math inline">\(N \times N\)</span> anti-symmetric matrix describing pairing terms. The positive (negative) sign corresponds to bosons (fermions) due to the CCR. Note that we have introduced a stacked ‘Nambu’ vector <span class="math inline">\(\vec{A} = [\hat{a}_1, \hat{a}_2, \cdots, \hat{a}_N, \hat{a}^{\dagger}_1, \hat{a}^{\dagger}_2, \cdots, \hat{a}^{\dagger}_N]\)</span> such that the CCR is now written as follows</p>
+<p><span class="math display">\[
+[A_i, A_j^{\dagger}]_{\pm} = \Sigma_{ij}
+\]</span></p>
+<p>where <span class="math inline">\(\Sigma_{ij} = \begin{bmatrix} I_N &amp; 0_N \\ 0_N &amp; \pm I_N \end{bmatrix}\)</span> since <span class="math inline">\(A\)</span> consists of both creation and annihilation operators.</p>
+<p>In such a case, it is convenient to look for the energy spectrum of the system by finding a new set of operators, <span class="math display">\[B = [\hat{b}_1, \hat{b}_2, \cdots, \hat{b}_N, \hat{b}^{\dagger}_1, \hat{b}^{\dagger}_2, \cdots, \hat{b}^{\dagger}_N],\]</span> related to <span class="math inline">\(A\)</span> through a linear transformation <span class="math inline">\(Q\)</span>: <span class="math display">\[\vec{A} = T \vec{B} \quad \implies \quad \vec{A}^\dagger = \vec{B}^\dagger T^\dagger.\]</span></p>
+<p>such that <span class="math inline">\(H = \frac{1}{2} \vec{B}^{\dagger}T^{\dagger} H_{BdG} T\vec{B} = \frac{1}{2} \vec{B}^{\dagger}\Lambda\vec{B} = \sum_{i} \Lambda_{i} \hat{b}^{\dagger}_i\hat{b}_i\)</span> where <span class="math inline">\(\Lambda\)</span> is diagonal. The transformation <span class="math inline">\(T\)</span> must chosen such that <span class="math inline">\(\vec{B}\)</span> also satisfies the CCR in order to ensure a physical interpretation. This is the general framework of Bogoliubov transformations.</p>
+<p>Such a transformation necessarily mixes the creation and annihilation operators and invites the interpretation of quasi-particles that have characteristics of holes and particles created by the original operators. In some places, this procedure can be referred to as ‘diagonalizing’ the system, i.e, solving the free part, but such a notion typically adds to the confusion because <span class="math inline">\(T^{\dagger}H_{BdG}T\)</span> is <strong>not</strong> a similarity transform in general.</p>
+<p>We now introduce <span class="math inline">\(Q = T^{-1}\)</span> such that <span class="math inline">\(\vec{B} = Q \vec{A}\)</span>. The constraint on <span class="math inline">\(Q\)</span> follows from a simple calculation enforcing the CCR.</p>
+<p><span class="math display">\[
+\begin{align}
+    [Q_{im}A_m, A_n^{\dagger} Q^{\dagger}_{nj}]_{\pm} &amp;= \Sigma_{ij} \\
+    Q_{im} Q^{\dagger}_{nj} [A_m, A_n^{\dagger}]_{\pm} = \Sigma_{ij} \\
+    Q_{im}\Sigma_{mn}Q_{nj}^{\dagger} = \Sigma_{ij}
+\end{align}
+\]</span></p>
+<p>which means that <span class="math inline">\(Q \, \Sigma \, Q^\dagger = \Sigma.\)</span> This tells us that for bosons, <span class="math inline">\(Q \in \mathrm{Sp}(2N, \mathbb{C})\)</span> the complex symplectic group, while for fermions, <span class="math inline">\(Q \in \mathrm{U}(2N)\)</span>, the unitary group. Note that this holds for the inverse transformation <span class="math inline">\(T = Q^{-1}\)</span> as well (i.e, <span class="math inline">\(T \Sigma T^{\dagger} = \Sigma\)</span>). Perhaps rather notably, for fermions this remains a similarity transform, so the eigenvalues may simply be obtained by unitarily diagonalizing <span class="math inline">\(H_{BdG}\)</span>, however, for bosons, it is necessarily different.</p>
+<p>We now need to identify an appropriate <span class="math inline">\(T\)</span> such that <span class="math inline">\(T^{\dagger}H_{BdG}T = \Lambda\)</span> is diagonal. This can be done with some simple manipulations as follows. We trivially have <span class="math inline">\(\Sigma T^{-1} = T^{\dagger} \Sigma\)</span>, so <span class="math display">\[
+\begin{align}
+\Sigma T^{-1} H_{BdG} T &amp;= \Sigma \Lambda\\
+T^{\dagger}\Sigma H_{BdG} T &amp;= \Sigma \Lambda \\
+\Sigma H_{BdG} T &amp;= T \Sigma \Lambda
+\end{align}
+\]</span></p>
+<p>Since <span class="math inline">\(\Lambda = \text{diag}(E_1, \dots, E_N, E_{N+1} \dots, E_{2N})\)</span> is diagonal, we know that <span class="math inline">\(\Sigma \Lambda = \text{diag}(E_1, \dots, E_N, \pm E_{N+1}, \dots, \pm E_{2N})\)</span> remains diagonal. Writing <span class="math inline">\(T = [\phi_1 \ \dots \phi_{2N}]\)</span> in terms of its column vectors, we now have:</p>
+<p><span class="math display">\[
+\begin{equation}
+    \Sigma H_{BdG} \phi_i = E_i \phi_i
+\end{equation}
+\]</span></p>
+<p>which is a normal eigenvalue equation where we diagonalize (for real this time) <span class="math inline">\(\Sigma H_{BdG} = \begin{bmatrix} h &amp;\Delta \\ -\Delta^{\dagger} &amp; -h^{T} \end{bmatrix}\)</span>.</p>
+<p>Even before doing this, we can actually say something about the spectrum from the form of <span class="math inline">\(H_{BdG}\)</span> already. For fermions, we have <span class="math inline">\(\Omega H_{BdG} \Omega = -H_{BdG}^*\)</span> where, <span class="math display">\[
+\Omega = \begin{bmatrix} 0_N &amp; I_N \\ I_N &amp; 0_N \end{bmatrix}.\]</span></p>
+<p>This immediately means that for every eigenvector <span class="math inline">\(\vec{v} = [\vec{v}_1, \vec{v}_2]\)</span> with eigenvalue <span class="math inline">\(\epsilon\)</span>, there is a corresponding pair <span class="math inline">\(\vec{v}' = [\vec{v}_2^*, \vec{v}_1^*]\)</span> with eigenvalue <span class="math inline">\(-\epsilon\)</span>. This is exactly due to a particle-hole symmetry in the original Hamiltonian. Whereas for bosons, one can check for the same eigenvector pair that each energy is instead two-fold degenerate. However, the physically relevant spectrum is that of <span class="math inline">\(\Sigma H_{BdG}\)</span> and not <span class="math inline">\(H_{BdG}\)</span>, where the symplectic constraint precisely flips half the eigenvalues resulting in a similar situation as the fermions.</p>
+<p>Before wrapping up, let us consider the case when a transformation may be valid for both bosons and fermions, i.e, it is both symplectic and unitary over <span class="math inline">\(2N \times 2N\)</span> matrices. Suppose we consider the transformation as</p>
+<p><span class="math display">\[
+Q = \begin{bmatrix} A &amp; B \\ C &amp; D \end{bmatrix}
+\]</span></p>
+<p>From the bosonic and fermionic constraints, we have <span class="math inline">\(Q\Sigma_{-} Q^{\dagger} = \Sigma_{-}\)</span> and <span class="math inline">\(Q Q^{\dagger} = I_{2N}\)</span>, respectively. Then <span class="math inline">\(Q\Sigma_{-} = \Sigma_{-} Q\)</span>, which immediately enforces <span class="math inline">\(B = C = 0_N\)</span>. The fermionic constraint then implies unitarity on the remaining blocks, <span class="math inline">\(AA^{\dagger} = DD^{\dagger} = I_N\)</span>. Finally, since <span class="math inline">\(\vec{a} \mapsto A \vec{a} \implies \vec{a}^{\dagger} \mapsto A^{\dagger} \vec{a}^{\dagger}\)</span>, <span class="math inline">\(A = D^{\dagger}\)</span>, resulting in the transformation,</p>
+<p><span class="math display">\[
+Q = \begin{bmatrix} A &amp; 0_N \\ 0_N &amp; A^{\dagger} \end{bmatrix}, \hspace{1cm} A \in U(N)
+\]</span></p>
+<p>which is a unitary transformation acting purely at the single particle level without mixing the creation and annihilation operators. This is perfectly consistent, since one would expect that the only transformations that are not affected by the exchange statistics must be a basis change of the single particle orbitals.</p>
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     
