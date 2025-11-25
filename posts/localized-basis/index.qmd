@@ -6,3 +6,4 @@ categories: [chunk, code]
 image: "julia.png"
 ---
 
+hermite -> fourier transform, roots relation

@@ -31,7 +31,7 @@ where $\Sigma_{ij} = \begin{bmatrix} I_N & 0_N \\ 0_N & \pm I_N \end{bmatrix}$ s
 
 In such a case, it is convenient to look for the energy spectrum of the system by finding a new set of operators,
 $$B = [\hat{b}_1, \hat{b}_2, \cdots, \hat{b}_N, \hat{b}^{\dagger}_1, \hat{b}^{\dagger}_2, \cdots, \hat{b}^{\dagger}_N],$$
-related to $A$ through a linear transformation $Q$:
+related to $A$ through a linear transformation $T$ (note that we interpret $\vec{A}$ and $\vec{A}^{\dagger}$ as column and row vectors, respectively):
 $$\vec{A} = T \vec{B} \quad \implies \quad \vec{A}^\dagger = \vec{B}^\dagger T^\dagger.$$
 
 such that $H = \frac{1}{2} \vec{B}^{\dagger}T^{\dagger} H_{BdG} T\vec{B} = \frac{1}{2} \vec{B}^{\dagger}\Lambda\vec{B} = \sum_{i} \Lambda_{i} \hat{b}^{\dagger}_i\hat{b}_i$ where $\Lambda$ is diagonal. The transformation $T$ must chosen such that $\vec{B}$ also satisfies the CCR in order to ensure a physical interpretation. This is the general framework of Bogoliubov transformations. 
@@ -62,33 +62,33 @@ $$
 \end{align}
 $$
 
-Since $\Lambda = \text{diag}(E_1, \dots, E_N, E_{N+1} \dots, E_{2N})$ is diagonal, we know that $\Sigma \Lambda = \text{diag}(E_1, \dots, E_N, \pm E_{N+1}, \dots, \pm E_{2N})$ remains diagonal. Writing $T = [\phi_1 \ \dots \phi_{2N}]$ in terms of its column vectors, we now have:
+Since $\Lambda = \text{diag}(E_1, \dots, E_N, E_{N+1} \dots, E_{2N})$ is diagonal, we know that $\Sigma \Lambda = \tilde\Lambda = \text{diag}(E_1, \dots, E_N, \pm E_{N+1}, \dots, \pm E_{2N})$ remains diagonal. Writing $T = [\phi_1 \ \dots \phi_{2N}]$ in terms of its column vectors, we now have:
 
 $$
 \begin{equation}
-    \Sigma H_{BdG} \phi_i = E_i \phi_i 
+    \Sigma H_{BdG} \phi_i = \tilde \Lambda_i \phi_i 
 \end{equation}
 $$
 
-which is a normal eigenvalue equation where we diagonalize (for real this time) $\Sigma H_{BdG} = \begin{bmatrix} h &\Delta \\ -\Delta^{\dagger} & -h^{T} \end{bmatrix}$. 
-
-Even before doing this, we can actually say something about the spectrum from the form of $H_{BdG}$ already. For fermions, we have $\Omega H_{BdG} \Omega = -H_{BdG}^*$ where,
+which is a normal eigenvalue equation where we diagonalize the matrix, 
 $$
-\Omega = \begin{bmatrix} 0_N & I_N \\ I_N & 0_N \end{bmatrix}.$$ 
+\Sigma H_{BdG} = \begin{bmatrix} h &\Delta \\ -\Delta^{\dagger} & -h^{T} \end{bmatrix}$$
+for both bosons and fermions. We can actually infer something about the spectrum in general using the structure of $H_{BdG}$. In both cases, we have $\Omega (\Sigma H_{BdG}) \Omega = -(\Sigma H_{BdG})^*$ where,
 
-This immediately means that for every eigenvector $\vec{v} = [\vec{v}_1, \vec{v}_2]$ with eigenvalue $\epsilon$, there is a corresponding pair $\vec{v}' = [\vec{v}_2^*, \vec{v}_1^*]$ with eigenvalue $-\epsilon$. This is exactly due to a particle-hole symmetry in the original Hamiltonian. Whereas for bosons, one can check for the same eigenvector pair that each energy is instead two-fold degenerate. However, the physically relevant spectrum is that of $\Sigma H_{BdG}$ and not $H_{BdG}$, where the symplectic constraint precisely flips half the eigenvalues resulting in a similar situation as the fermions.
+$$ \Omega = \begin{bmatrix} 0_N & I_N \\ I_N & 0_N \end{bmatrix}.$$ 
 
+This immediately means that for every eigenvector $\vec{v} = [\vec{v}_1, \vec{v}_2]$ with eigenvalue $\epsilon$, there is a corresponding pair $\vec{v}' = [\vec{v}_2^*, \vec{v}_1^*]$ with eigenvalue $-\epsilon$. This is interpreted as a particle-hole symmetry in the Bogoliubov spectrum. In case of fermions where $\Sigma = I_{2N}$, this symmetry is already present in the original Hamiltonian, $H_{BdG}$.
 
-Before wrapping up, let us consider the case when a transformation may be valid for both bosons and fermions, i.e, it is both symplectic and unitary over $2N \times 2N$ matrices. Suppose we consider the transformation as
-
-$$
-Q = \begin{bmatrix} A & B \\ C & D \end{bmatrix}
-$$
-
-From the bosonic and fermionic constraints, we have $Q\Sigma_{-} Q^{\dagger} = \Sigma_{-}$ and $Q Q^{\dagger} = I_{2N}$, respectively. Then $Q\Sigma_{-} = \Sigma_{-} Q$, which immediately enforces $B = C = 0_N$. The fermionic constraint then implies unitarity on the remaining blocks, $AA^{\dagger} = DD^{\dagger} = I_N$. Finally, since $\vec{a} \mapsto A \vec{a} \implies \vec{a}^{\dagger} \mapsto A^{\dagger} \vec{a}^{\dagger}$, $A = D^{\dagger}$, resulting in the transformation,
+Before wrapping up, let us consider the case when a transformation may be valid for both bosons and fermions, i.e, it is both symplectic and unitary over $2N \times 2N$ matrices. Suppose we consider a general Bogoliubov transformation as follows (since $\vec{a} \mapsto M \vec{a} \implies \vec{a}^{\dagger} \mapsto M^* \vec{a}^{\dagger}$, considering both cases as column vectors as they are stacked in $\vec{A}$),
 
 $$
-Q = \begin{bmatrix} A & 0_N \\ 0_N & A^{\dagger} \end{bmatrix}, \hspace{1cm} A \in U(N)
+Q = \begin{bmatrix} A & B \\ B^* & A^* \end{bmatrix}
+$$
+
+From the bosonic and fermionic constraints, we have $Q\Sigma_{-} Q^{\dagger} = \Sigma_{-}$ and $Q Q^{\dagger} = I_{2N}$, respectively. Then $Q\Sigma_{-} = \Sigma_{-} Q$, which immediately enforces $B = 0_N$. The fermionic constraint then implies unitarity on the remaining blocks, $AA^{\dagger} = I_N$. We then have,
+
+$$
+Q = \begin{bmatrix} A & 0_N \\ 0_N & A^* \end{bmatrix}, \hspace{1cm} A \in U(N)
 $$
 
 which is a unitary transformation acting purely at the single particle level without mixing the creation and annihilation operators. This is perfectly consistent, since one would expect that the only transformations that are not affected by the exchange statistics must be a basis change of the single particle orbitals. 
