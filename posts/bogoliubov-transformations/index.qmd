@@ -10,7 +10,7 @@ Consider a set of $N$ second-quantized creation operators
 $$\vec{a} = [\hat{a}_1, \hat{a}_2, \cdots, \hat{a}_N]$$
 which satisfy the canonical (anti-)commutation relations (CCR),
 $$[\hat{a}_i, \hat{a}_j^{\dagger}]_{\pm} = \delta_{ij},$$
-depending on whether they describe bosons or fermions. Suppose we are interested in a system described by a Hamiltonian that is quadratic in these operators, $H=\sum_{ij} \hat{a}_i^{\dagger}​h_{ij}\hat{​a}_j​ + \frac{1}{2} ​\hat{a}_i^{\dagger}​\Delta_{ij}​\hat{a}^{\dagger}​+\frac{1}{2}​\hat{a}_i ​\Delta_{ij}^* \hat{a}_j​$. Generically, this may be cast into a matrix equation like so (upto some constant terms),
+depending on whether they describe bosons or fermions. Suppose we are interested in a system described by a Hamiltonian that is quadratic in these operators, $H=\sum_{ij} \hat{a}_i^{\dagger}​h_{ij}\hat{​a}_j​ + \frac{1}{2} ​\hat{a}_i^{\dagger}​\Delta_{ij}​\hat{a}^{\dagger}_j ​+\frac{1}{2}​\hat{a}_i ​\Delta_{ij}^* \hat{a}_j​$. Generically, this may be cast into a matrix equation like so (upto some constant terms),
 
 $$
 H = \frac{1}{2} 
@@ -53,11 +53,12 @@ which means that $Q \, \Sigma \, Q^\dagger = \Sigma.$ This tells us that for bos
 the complex symplectic group, while for fermions, $Q \in \mathrm{U}(2N)$, the unitary group. Note that this holds for the inverse transformation $T = Q^{-1}$ as well (i.e, $T \Sigma T^{\dagger} = \Sigma$). Perhaps rather notably, for fermions this remains a similarity transform, so the eigenvalues may simply be obtained by unitarily diagonalizing $H_{BdG}$, however, for bosons, it is necessarily different. 
 
 
-We now need to identify an appropriate $T$ such that $T^{\dagger}H_{BdG}T = \Lambda$ is diagonal. This can be done with some simple manipulations as follows. We trivially have $\Sigma T^{-1} = T^{\dagger} \Sigma$, so
+We now need to identify an appropriate $T$ such that $T^{\dagger}H_{BdG}T = \Lambda$ is diagonal. This can be done with some simple manipulations as follows. Since we have $\Sigma^2 = I_{2N}$, it follows that $T^{\dagger} = \Sigma T^{-1} \Sigma$. Then, 
 $$
 \begin{align}
-\Sigma T^{-1} H_{BdG} T &= \Sigma \Lambda\\
- T^{\dagger}\Sigma H_{BdG} T &= \Sigma \Lambda \\
+ T^{\dagger} H_{BdG} T &= \Lambda\\
+(\Sigma T^{-1} \Sigma) H_{BdG} T &= \Lambda \\ 
+T^{-1} \Sigma H_{BdG} T &= \Sigma \Lambda\\
  \Sigma H_{BdG} T &= T \Sigma \Lambda
 \end{align}
 $$
@@ -77,7 +78,9 @@ for both bosons and fermions. We can actually infer something about the spectrum
 
 $$ \Omega = \begin{bmatrix} 0_N & I_N \\ I_N & 0_N \end{bmatrix}.$$ 
 
-This immediately means that for every eigenvector $\vec{v} = [\vec{v}_1, \vec{v}_2]$ with eigenvalue $\epsilon$, there is a corresponding pair $\vec{v}' = [\vec{v}_2^*, \vec{v}_1^*]$ with eigenvalue $-\epsilon$. This is interpreted as a particle-hole symmetry in the Bogoliubov spectrum. In case of fermions where $\Sigma = I_{2N}$, this symmetry is already present in the original Hamiltonian, $H_{BdG}$.
+This immediately means that for every eigenvector $\vec{v} = [\vec{v}_1, \vec{v}_2]$ with eigenvalue $\epsilon$, there is a corresponding pair $\vec{v}' = [\vec{v}_2^*, \vec{v}_1^*]$ with eigenvalue $-\epsilon$ in $\tilde \Lambda$. The physical spectrum is then given by $\Lambda = \Sigma \tilde \Lambda$.
+
+In the case of fermions, $\Lambda = \tilde \Lambda$, so the ground state already has all $N$ negative energy states occupied, with the remaining $N$ positive energies indicating physical excitations. The structure in the eigenvalues is interpreted as a manifestation of particle-hole symmetry in the original Hamiltonian $H_{BdG}$. For bosons on the other hand, the $\Sigma$ flips back the negative half of the spectrum, seemingly resulting in a doubly degenerate spectrum of positive energies in $\Lambda$. This degeneracy, however, simply results from doubling the size of the Hamiltonian while constructing $H_{BdG}$ and there are only $N$ physically distinct excitations. 
 
 Before wrapping up, let us consider the case when a transformation may be valid for both bosons and fermions, i.e, it is both symplectic and unitary over $2N \times 2N$ matrices. Suppose we consider a general Bogoliubov transformation as follows (since $\vec{a} \mapsto M \vec{a} \implies \vec{a}^{\dagger} \mapsto M^* \vec{a}^{\dagger}$, considering both cases as column vectors as they are stacked in $\vec{A}$),
 
