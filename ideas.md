@@ -6,3 +6,4 @@
 - imaginary time evolution as a gradient descent with a non trivial metric
 - formulating gross pitaevskii with fixed particle number vs grand canonical
 - Imaginary bogoliubov frequencies as dynamical instabilities
+- fermionic vs bosonic transformations; show that single particle transformations correspond to the U(N).

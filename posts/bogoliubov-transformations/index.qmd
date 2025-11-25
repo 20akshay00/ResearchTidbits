@@ -2,8 +2,8 @@
 title: "Bogoliubov transformations"
 author: "Akshay Shankar"
 date: "2025-11-25"
-categories: [tidbit]
-image: "julia.png"
+categories: [tidbit, theory]
+image: "matrix.png"
 ---
 
 Consider a set of $N$ second-quantized creation operators 
