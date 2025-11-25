@@ -70,7 +70,7 @@ $$
 \end{equation}
 $$
 
-which is a normal eigenvalue equation where we diagonalize (for real this time) $\Sigma H_{BdG} = \begin{bmatrix} h &\Delta \\ \mp \Delta^{\dagger} & \mp h^{T} \end{bmatrix}$. 
+which is a normal eigenvalue equation where we diagonalize (for real this time) $\Sigma H_{BdG} = \begin{bmatrix} h &\Delta \\ -\Delta^{\dagger} & -h^{T} \end{bmatrix}$. 
 
 Even before doing this, we can actually say something about the spectrum from the form of $H_{BdG}$ already. For fermions, we have $\Omega H_{BdG} \Omega = -H_{BdG}^*$ where,
 $$
