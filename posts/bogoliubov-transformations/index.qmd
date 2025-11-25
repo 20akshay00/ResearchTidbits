@@ -34,7 +34,7 @@ $$B = [\hat{b}_1, \hat{b}_2, \cdots, \hat{b}_N, \hat{b}^{\dagger}_1, \hat{b}^{\d
 related to $A$ through a linear transformation $T$ (note that we interpret $\vec{A}$ and $\vec{A}^{\dagger}$ as column and row vectors, respectively):
 $$\vec{A} = T \vec{B} \quad \implies \quad \vec{A}^\dagger = \vec{B}^\dagger T^\dagger.$$
 
-such that $H = \frac{1}{2} \vec{B}^{\dagger}T^{\dagger} H_{BdG} T\vec{B} = \frac{1}{2} \vec{B}^{\dagger}\Lambda\vec{B} = \sum_{i} \Lambda_{i} \hat{b}^{\dagger}_i\hat{b}_i$ where $\Lambda$ is diagonal. The transformation $T$ must chosen such that $\vec{B}$ also satisfies the CCR in order to ensure a physical interpretation. This is the general framework of Bogoliubov transformations. 
+such that $H = \frac{1}{2} \vec{B}^{\dagger}T^{\dagger} H_{BdG} T\vec{B} = \frac{1}{2} \vec{B}^{\dagger}\Lambda\vec{B} = \sum_{i} \Lambda_{i} \hat{B}^{\dagger}_i\hat{B}_i$ where $\Lambda$ is diagonal. The transformation $T$ must chosen such that $\vec{B}$ also satisfies the CCR in order to ensure a physical interpretation. This is the general framework of Bogoliubov transformations. 
 
 Such a transformation necessarily mixes the creation and annihilation operators and invites the interpretation of quasi-particles that have characteristics of holes and particles created by the original operators. In some places, this procedure can be referred to as 'diagonalizing' the system, i.e, solving the free part, but such a notion typically adds to the confusion because $T^{\dagger}H_{BdG}T$ is **not** a similarity transform in general.
 
