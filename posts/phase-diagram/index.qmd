@@ -4,7 +4,7 @@ author: "Akshay Shankar"
 date: "2023-06-01"
 categories: [tidbit, code]
 image: "phase_diagram.png"
-description: "Plotting phase boundaries shouldn't require solving the full many-body problem. Turns out that a handful of iterations can have information than you'd think."
+description: "Plotting phase boundaries shouldn't require solving the full many-body problem. Turns out that a handful of iterations can have more information than you'd think."
 ---
 
 Given a quantum many-body Hamiltonian, one of the first goals usually is to account for possible ground state phases and map out the corresponding phase diagram in the parameter space. Generally, each phase is associated with an observable called the order parameter that only takes a non-zero value if the ground state is in that particular phase. Plotting out the phase diagram then just becomes a matter of determining the regions where various order parameters vanish. 
