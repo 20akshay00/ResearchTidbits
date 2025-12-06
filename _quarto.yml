@@ -10,7 +10,9 @@ website:
   description: "A collection of concise ideas gathered while exploring many-body physics."
   open-graph: true    # standard for LinkedIn/Facebook/Slack
   twitter-card: true  # specific for Twitter
-  google-analytics: G-361104V04L
+  google-analytics: 
+    tracking-id: "G-361104V04L"
+    storage: none
   navbar:
     right:
       - about.qmd
