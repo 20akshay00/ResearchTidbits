@@ -54,48 +54,6 @@
   <media:content url="https://20akshay00.github.io/ResearchTidbits/posts/bogoliubov-transformations/matrix.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
-  <title>Constructing a localized basis</title>
-  <dc:creator>Akshay Shankar</dc:creator>
-  <link>https://20akshay00.github.io/ResearchTidbits/posts/localized-basis/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>hermite -&gt; fourier transform, roots relation</p>
-
-
-
- ]]></description>
-  <category>chunk</category>
-  <category>code</category>
-  <guid>https://20akshay00.github.io/ResearchTidbits/posts/localized-basis/</guid>
-  <pubDate>Wed, 24 Sep 2025 22:00:00 GMT</pubDate>
-  <media:content url="https://20akshay00.github.io/ResearchTidbits/posts/localized-basis/julia.png" medium="image" type="image/png"/>
-</item>
-<item>
-  <title>Imaginary time evolution</title>
-  <dc:creator>Akshay Shankar</dc:creator>
-  <link>https://20akshay00.github.io/ResearchTidbits/posts/imaginary-time/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p><img src="https://latex.codecogs.com/png.latex?i%20%5Chbar%20%5Cpartial_t%20%5CPsi%20=%20-%5Cfrac%7B%5Cpartial%5E2%7D%7B%5Cpartial%20x%5E2%7D%20%5CPsi"></p>
-
-
-
- ]]></description>
-  <category>chunk</category>
-  <category>quantum</category>
-  <category>code</category>
-  <guid>https://20akshay00.github.io/ResearchTidbits/posts/imaginary-time/</guid>
-  <pubDate>Mon, 02 Jun 2025 22:00:00 GMT</pubDate>
-</item>
-<item>
   <title>Superfluidity as a response to phase twists</title>
   <dc:creator>Akshay Shankar</dc:creator>
   <link>https://20akshay00.github.io/ResearchTidbits/posts/phase-twists/</link>
@@ -2932,25 +2890,6 @@ font-style: inherit;">end</span></span></code></pre></div>
   <category>number theory</category>
   <guid>https://20akshay00.github.io/ResearchTidbits/posts/linear-indexing/</guid>
   <pubDate>Sat, 14 Sep 2024 22:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Bosons, but not quite</title>
-  <dc:creator>Akshay Shankar</dc:creator>
-  <link>https://20akshay00.github.io/ResearchTidbits/posts/composite-bosons/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-
-
-
- ]]></description>
-  <category>nibble</category>
-  <category>bec</category>
-  <guid>https://20akshay00.github.io/ResearchTidbits/posts/composite-bosons/</guid>
-  <pubDate>Sat, 02 Mar 2024 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Automating image cropping</title>
