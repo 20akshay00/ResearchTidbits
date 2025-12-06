@@ -3,6 +3,7 @@ title: "Thermal states in a quantum harmonic oscillator"
 author: "Akshay Shankar"
 date: "2025-12-05"
 categories: [chunk, bec, quantum]
+description: ""
 draft: true
 ---
 

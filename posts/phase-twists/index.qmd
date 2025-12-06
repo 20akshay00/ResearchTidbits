@@ -4,6 +4,7 @@ author: "Akshay Shankar"
 date: "2025-05-07"
 categories: [chunk, theory]
 image: "HF.png"
+description: "Forget frictionless flow for a moment. Have you ever wondered if there is a microscopic indicator of whether a state exhibits superfluidity?"
 ---
 
 [Superfluidity](https://www.youtube.com/watch?v=2Z6UJbwxBZI) and [superconductivity](https://www.youtube.com/watch?v=8GY4m022tgo) might be, in my opinion, one of the most intriguing phenomena that presents quantum behaviour at a macroscopic scale. However, they manifest in a variety of different manners depending on the geometry of the setup and other specifics of the experiment, making it hard to provide a strict definition for what a superfluid/superconductor is. Loosely speaking though, it is widely accepted that they are a collection of phenomena arising due to the systems capacity to host hydrodynamic flow with zero viscosity/resistance. However, recently I have been trying to understand what exactly causes a quantum many-body system to exhibit these phenomena from a microscopic point of view, and viscosity is not the easiest quantity to work with for this purpose. So let us try to see if there are friendlier quantities that let us peek behind the curtains.

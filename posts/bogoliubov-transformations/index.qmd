@@ -1,10 +1,16 @@
 ---
-title: "Bogoliubov transformations"
+title: "Demystifying Bogoliubov transformations"
 author: "Akshay Shankar"
 date: "2025-11-25"
 categories: [tidbit, theory]
 image: "matrix.png"
+description: "Solving quadratic Hamiltonians can be way more fun when linear algebra exposes the symmetries behind Bogoliubov transformations."
+
 ---
+
+When I first learnt about Bogoliubov transformations, it was in the context of the BCS theory of superconductivity. They were introduced as algebraic equations like $\hat a_p = u_p \hat b_p + v_p^* \hat b_p^{\dagger}$ where the co-efficients are chosen such that the system may be "diagonalized" while preserving the canonical commutation relations. While such a treatment resulted in the standard expressions for the energy spectrum, it led to some deep-rooted confusions on what exactly we were achieving. In this article, I frame the procedure entirely in terms of linear algebra to highlight how transparently and clearly it reveals the underlying structure of such problems.
+
+## Setting up the problem
 
 Consider a set of $N$ second-quantized creation operators 
 $$\vec{a} = [\hat{a}_1, \hat{a}_2, \cdots, \hat{a}_N]$$
@@ -36,8 +42,9 @@ $$\vec{A} = T \vec{B} \quad \implies \quad \vec{A}^\dagger = \vec{B}^\dagger T^\
 
 such that $H = \frac{1}{2} \vec{B}^{\dagger}T^{\dagger} H_{BdG} T\vec{B} = \frac{1}{2} \vec{B}^{\dagger}\Lambda\vec{B} = \sum_{i} \Lambda_{i} \hat{B}^{\dagger}_i\hat{B}_i$ where $\Lambda$ is diagonal. The transformation $T$ must chosen such that $\vec{B}$ also satisfies the CCR in order to ensure a physical interpretation. This is the general framework of Bogoliubov transformations. 
 
-Such a transformation necessarily mixes the creation and annihilation operators and invites the interpretation of quasi-particles that have characteristics of holes and particles created by the original operators. In some places, this procedure can be referred to as 'diagonalizing' the system, i.e, solving the free part, but such a notion typically adds to the confusion because $T^{\dagger}H_{BdG}T$ is **not** a similarity transform in general.
 
+## Solving for the energy spectrum
+Such a transformation necessarily mixes the creation and annihilation operators and invites the interpretation of quasi-particles that have characteristics of holes and particles created by the original operators. In some places, this procedure can be referred to as 'diagonalizing' the system, i.e, solving the free part, but such a notion typically adds to the confusion because $T^{\dagger}H_{BdG}T$ is **not** a similarity transform in general.
 
 We now introduce $Q = T^{-1}$ such that $\vec{B} = Q \vec{A}$. The constraint on $Q$ follows from a simple calculation enforcing the CCR.
 
@@ -51,7 +58,6 @@ $$
 
 which means that $Q \, \Sigma \, Q^\dagger = \Sigma.$ This tells us that for bosons, $Q \in \mathrm{Sp}(2N, \mathbb{C})$
 the complex symplectic group, while for fermions, $Q \in \mathrm{U}(2N)$, the unitary group. Note that this holds for the inverse transformation $T = Q^{-1}$ as well (i.e, $T \Sigma T^{\dagger} = \Sigma$). Perhaps rather notably, for fermions this remains a similarity transform, so the eigenvalues may simply be obtained by unitarily diagonalizing $H_{BdG}$, however, for bosons, it is necessarily different. 
-
 
 We now need to identify an appropriate $T$ such that $T^{\dagger}H_{BdG}T = \Lambda$ is diagonal. This can be done with some simple manipulations as follows. Since we have $\Sigma^2 = I_{2N}$, it follows that $T^{\dagger} = \Sigma T^{-1} \Sigma$. Then, 
 $$
@@ -81,6 +87,9 @@ $$ \Omega = \begin{bmatrix} 0_N & I_N \\ I_N & 0_N \end{bmatrix}.$$
 This immediately means that for every eigenvector $\vec{v} = [\vec{v}_1, \vec{v}_2]$ with eigenvalue $\epsilon$, there is a corresponding pair $\vec{v}' = [\vec{v}_2^*, \vec{v}_1^*]$ with eigenvalue $-\epsilon$ in $\tilde \Lambda$. The physical spectrum is then given by $\Lambda = \Sigma \tilde \Lambda$.
 
 In the case of fermions, $\Lambda = \tilde \Lambda$, so the ground state already has all $N$ negative energy states occupied, with the remaining $N$ positive energies indicating physical excitations. The structure in the eigenvalues is interpreted as a manifestation of particle-hole symmetry in the original Hamiltonian $H_{BdG}$. For bosons on the other hand, the $\Sigma$ flips back the negative half of the spectrum, seemingly resulting in a doubly degenerate spectrum of positive energies in $\Lambda$. This degeneracy, however, simply results from doubling the size of the Hamiltonian while constructing $H_{BdG}$ and there are only $N$ physically distinct excitations. 
+
+
+## Do bosons and fermions agree on anything?
 
 Before wrapping up, let us consider the case when a transformation may be valid for both bosons and fermions, i.e, it is both symplectic and unitary over $2N \times 2N$ matrices. Suppose we consider a general Bogoliubov transformation as follows (since $\vec{a} \mapsto M \vec{a} \implies \vec{a}^{\dagger} \mapsto M^* \vec{a}^{\dagger}$, considering both cases as column vectors as they are stacked in $\vec{A}$),
 

@@ -4,7 +4,7 @@ author: "Akshay Shankar"
 date: "2025-01-27"
 categories: [chunk, code]
 image: "julia.png"
-description: "A short summary of the post that will appear in Google results."
+description: "Why write a simple loop when you can over-engineer a flexible interface? Let us dive into using the Callback pattern in Julia to inject custom logic mid-simulation."
 ---
 
 One of my favourite design patterns is the `Callback` (also known as the [`Command`](https://gameprogrammingpatterns.com/command.html
