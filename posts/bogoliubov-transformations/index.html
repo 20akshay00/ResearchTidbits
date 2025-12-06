@@ -8,8 +8,9 @@
 
 <meta name="author" content="Akshay Shankar">
 <meta name="dcterms.date" content="2025-11-25">
+<meta name="description" content="Solving quadratic Hamiltonians can be way more fun when linear algebra exposes the symmetries behind Bogoliubov transformations.">
 
-<title>Bogoliubov transformations – ResearchTidbits</title>
+<title>Demystifying Bogoliubov transformations – ResearchTidbits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -115,14 +116,14 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Bogoliubov transformations – ResearchTidbits">
-<meta property="og:description" content="A collection of concise ideas gathered while exploring many-body physics.">
+<meta property="og:title" content="Demystifying Bogoliubov transformations – ResearchTidbits">
+<meta property="og:description" content="Solving quadratic Hamiltonians can be way more fun when linear algebra exposes the symmetries behind Bogoliubov transformations.">
 <meta property="og:image" content="https://20akshay00.github.io/ResearchTidbits/posts/bogoliubov-transformations/matrix.png">
 <meta property="og:site_name" content="ResearchTidbits">
 <meta property="og:image:height" content="245">
 <meta property="og:image:width" content="245">
-<meta name="twitter:title" content="Bogoliubov transformations – ResearchTidbits">
-<meta name="twitter:description" content="A collection of concise ideas gathered while exploring many-body physics.">
+<meta name="twitter:title" content="Demystifying Bogoliubov transformations – ResearchTidbits">
+<meta name="twitter:description" content="Solving quadratic Hamiltonians can be way more fun when linear algebra exposes the symmetries behind Bogoliubov transformations.">
 <meta name="twitter:image" content="https://20akshay00.github.io/ResearchTidbits/posts/bogoliubov-transformations/matrix.png">
 <meta name="twitter:image-height" content="245">
 <meta name="twitter:image-width" content="245">
@@ -176,8 +177,13 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Bogoliubov transformations</h1>
-                                <div class="quarto-categories">
+      <h1 class="title">Demystifying Bogoliubov transformations</h1>
+                  <div>
+        <div class="description">
+          Solving quadratic Hamiltonians can be way more fun when linear algebra exposes the symmetries behind Bogoliubov transformations.
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">tidbit</div>
                 <div class="quarto-category">theory</div>
               </div>
@@ -216,6 +222,9 @@ window.Quarto = {
 
 
 
+<p>When I first learnt about Bogoliubov transformations, it was in the context of the BCS theory of superconductivity. They were introduced as algebraic equations like <span class="math inline">\(\hat a_p = u_p \hat b_p + v_p^* \hat b_p^{\dagger}\)</span> where the co-efficients are chosen such that the system may be “diagonalized” while preserving the canonical commutation relations. While such a treatment resulted in the standard expressions for the energy spectrum, it led to some deep-rooted confusions on what exactly we were achieving. In this article, I frame the procedure entirely in terms of linear algebra to highlight how transparently and clearly it reveals the underlying structure of such problems.</p>
+<section id="setting-up-the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-problem">Setting up the problem</h2>
 <p>Consider a set of <span class="math inline">\(N\)</span> second-quantized creation operators <span class="math display">\[\vec{a} = [\hat{a}_1, \hat{a}_2, \cdots, \hat{a}_N]\]</span> which satisfy the canonical (anti-)commutation relations (CCR), <span class="math display">\[[\hat{a}_i, \hat{a}_j^{\dagger}]_{\pm} = \delta_{ij},\]</span> depending on whether they describe bosons or fermions. Suppose we are interested in a system described by a Hamiltonian that is quadratic in these operators, <span class="math inline">\(H=\sum_{ij} \hat{a}_i^{\dagger}​h_{ij}\hat{​a}_j​ + \frac{1}{2} ​\hat{a}_i^{\dagger}​\Delta_{ij}​\hat{a}^{\dagger}_j ​+\frac{1}{2}​\hat{a}_i ​\Delta_{ij}^* \hat{a}_j​\)</span>. Generically, this may be cast into a matrix equation like so (upto some constant terms),</p>
 <p><span class="math display">\[
 H = \frac{1}{2}
@@ -232,6 +241,9 @@ h &amp;\Delta \\
 <p>where <span class="math inline">\(\Sigma_{ij} = \begin{bmatrix} I_N &amp; 0_N \\ 0_N &amp; \pm I_N \end{bmatrix}\)</span> since <span class="math inline">\(A\)</span> consists of both creation and annihilation operators.</p>
 <p>In such a case, it is convenient to look for the energy spectrum of the system by finding a new set of operators, <span class="math display">\[B = [\hat{b}_1, \hat{b}_2, \cdots, \hat{b}_N, \hat{b}^{\dagger}_1, \hat{b}^{\dagger}_2, \cdots, \hat{b}^{\dagger}_N],\]</span> related to <span class="math inline">\(A\)</span> through a linear transformation <span class="math inline">\(T\)</span> (note that we interpret <span class="math inline">\(\vec{A}\)</span> and <span class="math inline">\(\vec{A}^{\dagger}\)</span> as column and row vectors, respectively): <span class="math display">\[\vec{A} = T \vec{B} \quad \implies \quad \vec{A}^\dagger = \vec{B}^\dagger T^\dagger.\]</span></p>
 <p>such that <span class="math inline">\(H = \frac{1}{2} \vec{B}^{\dagger}T^{\dagger} H_{BdG} T\vec{B} = \frac{1}{2} \vec{B}^{\dagger}\Lambda\vec{B} = \sum_{i} \Lambda_{i} \hat{B}^{\dagger}_i\hat{B}_i\)</span> where <span class="math inline">\(\Lambda\)</span> is diagonal. The transformation <span class="math inline">\(T\)</span> must chosen such that <span class="math inline">\(\vec{B}\)</span> also satisfies the CCR in order to ensure a physical interpretation. This is the general framework of Bogoliubov transformations.</p>
+</section>
+<section id="solving-for-the-energy-spectrum" class="level2">
+<h2 class="anchored" data-anchor-id="solving-for-the-energy-spectrum">Solving for the energy spectrum</h2>
 <p>Such a transformation necessarily mixes the creation and annihilation operators and invites the interpretation of quasi-particles that have characteristics of holes and particles created by the original operators. In some places, this procedure can be referred to as ‘diagonalizing’ the system, i.e, solving the free part, but such a notion typically adds to the confusion because <span class="math inline">\(T^{\dagger}H_{BdG}T\)</span> is <strong>not</strong> a similarity transform in general.</p>
 <p>We now introduce <span class="math inline">\(Q = T^{-1}\)</span> such that <span class="math inline">\(\vec{B} = Q \vec{A}\)</span>. The constraint on <span class="math inline">\(Q\)</span> follows from a simple calculation enforcing the CCR.</p>
 <p><span class="math display">\[
@@ -261,6 +273,9 @@ T^{-1} \Sigma H_{BdG} T &amp;= \Sigma \Lambda\\
 <p><span class="math display">\[ \Omega = \begin{bmatrix} 0_N &amp; I_N \\ I_N &amp; 0_N \end{bmatrix}.\]</span></p>
 <p>This immediately means that for every eigenvector <span class="math inline">\(\vec{v} = [\vec{v}_1, \vec{v}_2]\)</span> with eigenvalue <span class="math inline">\(\epsilon\)</span>, there is a corresponding pair <span class="math inline">\(\vec{v}' = [\vec{v}_2^*, \vec{v}_1^*]\)</span> with eigenvalue <span class="math inline">\(-\epsilon\)</span> in <span class="math inline">\(\tilde \Lambda\)</span>. The physical spectrum is then given by <span class="math inline">\(\Lambda = \Sigma \tilde \Lambda\)</span>.</p>
 <p>In the case of fermions, <span class="math inline">\(\Lambda = \tilde \Lambda\)</span>, so the ground state already has all <span class="math inline">\(N\)</span> negative energy states occupied, with the remaining <span class="math inline">\(N\)</span> positive energies indicating physical excitations. The structure in the eigenvalues is interpreted as a manifestation of particle-hole symmetry in the original Hamiltonian <span class="math inline">\(H_{BdG}\)</span>. For bosons on the other hand, the <span class="math inline">\(\Sigma\)</span> flips back the negative half of the spectrum, seemingly resulting in a doubly degenerate spectrum of positive energies in <span class="math inline">\(\Lambda\)</span>. This degeneracy, however, simply results from doubling the size of the Hamiltonian while constructing <span class="math inline">\(H_{BdG}\)</span> and there are only <span class="math inline">\(N\)</span> physically distinct excitations.</p>
+</section>
+<section id="do-bosons-and-fermions-agree-on-anything" class="level2">
+<h2 class="anchored" data-anchor-id="do-bosons-and-fermions-agree-on-anything">Do bosons and fermions agree on anything?</h2>
 <p>Before wrapping up, let us consider the case when a transformation may be valid for both bosons and fermions, i.e, it is both symplectic and unitary over <span class="math inline">\(2N \times 2N\)</span> matrices. Suppose we consider a general Bogoliubov transformation as follows (since <span class="math inline">\(\vec{a} \mapsto M \vec{a} \implies \vec{a}^{\dagger} \mapsto M^* \vec{a}^{\dagger}\)</span>, considering both cases as column vectors as they are stacked in <span class="math inline">\(\vec{A}\)</span>),</p>
 <p><span class="math display">\[
 Q = \begin{bmatrix} A &amp; B \\ B^* &amp; A^* \end{bmatrix}
@@ -272,6 +287,7 @@ Q = \begin{bmatrix} A &amp; 0_N \\ 0_N &amp; A^* \end{bmatrix}, \hspace{1cm} A \
 <p>which is a unitary transformation acting purely at the single particle level without mixing the creation and annihilation operators. This is perfectly consistent, since one would expect that the only transformations that are not affected by the exchange statistics must be a basis change of the single particle orbitals.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
