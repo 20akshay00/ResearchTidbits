@@ -9,5 +9,16 @@
       "/posts/image-crop/index.html",
       "/posts/phase-diagram/index.html"
     ]
+  },
+  {
+    "listing": "/feed.html",
+    "items": [
+      "/posts/bogoliubov-transformations/index.html",
+      "/posts/phase-twists/index.html",
+      "/posts/callbacks/index.html",
+      "/posts/linear-indexing/index.html",
+      "/posts/image-crop/index.html",
+      "/posts/phase-diagram/index.html"
+    ]
   }
 ]
