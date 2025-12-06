@@ -8,6 +8,9 @@ website:
   title: "ResearchTidbits"
   site-url: https://20akshay00.github.io/ResearchTidbits/
   description: "A collection of concise ideas gathered while exploring many-body physics."
+  open-graph: true    # standard for LinkedIn/Facebook/Slack
+  twitter-card: true  # specific for Twitter
+  google-analytics: G-361104V04L
   navbar:
     right:
       - about.qmd
