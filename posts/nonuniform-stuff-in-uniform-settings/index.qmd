@@ -1,0 +1,7 @@
+---
+title: "Non uniform stuff in uniform settings"
+author: "Akshay Shankar"
+date: "2025-12-05"
+categories: [tidbit, quantum]
+draft: true
+---

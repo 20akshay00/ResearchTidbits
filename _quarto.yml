@@ -1,8 +1,13 @@
 project:
   type: website
 
+execute:
+  freeze: auto
+
 website:
   title: "ResearchTidbits"
+  site-url: https://20akshay00.github.io/ResearchTidbits/
+  description: "A collection of concise ideas gathered while exploring many-body physics."
   navbar:
     right:
       - about.qmd
@@ -10,6 +15,8 @@ website:
         href: https://github.com/20akshay00
       - icon: twitter
         href: https://twitter.com/20akshay00
+      - icon: rss
+        href: index.xml
 format:
   html:
     theme:

@@ -1,0 +1,137 @@
+---
+title: "Thermal states in a quantum harmonic oscillator"
+author: "Akshay Shankar"
+date: "2025-12-05"
+categories: [chunk, bec, quantum]
+draft: true
+---
+
+Consider an experimental setup of a dilute gas of bosonic atoms in a 3D harmonic trap in thermal equilibrium at some finite temperature $T$. Typically, the most accessible observable is an in-situ image of the integrated density profile of the cloud in one of the orthogonal 2D planes (say, $x-y$). In this article, we would like to find a way to extract the temperature $T$ of the system using this image. 
+
+For simplicity, we will sum the image along $y$, leaving us with an effective density profile along $x$. An assumption we make is that the temperature is much larger than the critical BEC temperature such that the gas is dilute enough to be largely non-interacting and the particle statistics is not relevant. As an aside, surprisingly, such ideas are still useful in experimentally interesting regimes, but here we mostly assume this to allow for closed form expressions with room for interpretation.
+
+
+## Initial state
+Without interactions, the system may be completely decoupled along its axes, and we can consider the reduced density matrix $\rho = \text{Tr}_{y,z}(\tilde \rho)$ (where $\tilde \rho = \rho_x \otimes \rho_y \otimes \rho_z$ is properly normalized) and describe the physics as if it were in 1D. The system is then described by the quantum harmonic oscillator Hamiltonian, $\hat H = \hbar \omega (\hat a_x^{\dagger} \hat a_x + 1/2)$ written in terms of the standard ladder operators satisfying $[\hat a_x, \hat a_x^{\dagger}] = I$. The eigenstates $\{|n\rangle\}$ have a well known representation in the position basis, $\{\psi_n(x)\}$, in terms of the physicists' Hermite functions, $\{h_n(x)\}$,
+
+$$
+\begin{align}
+\psi_n(x) &= \langle x | n \rangle = \frac{1}{\sqrt{l_h}} h_n(x/l_h)\\
+h_{n}(x) &= \frac{1}{\pi^{1/4}\sqrt{2^n n!}} H_{n}(x) e^{-x^2/2}  
+\end{align}
+$$
+
+where $H_{n}(x)$ are the Hermite polynomials and $l_h = \sqrt{\hbar/m\omega}$ is the natural length scale of the harmonic oscillator. The state of the system at thermal equilibrium within the canonical ensemble is written as a density matrix $\hat\rho = \exp(-\beta \hat H)/\mathcal{Z}$, where $\mathcal{Z} = \text{Tr}(\exp(-\beta \hat H))$. It is naturally diagonal in the $\{|n\rangle\}$ basis,
+
+$$
+\begin{equation}
+\bra n \rho \ket {n'} = \delta_{n, n'} \, u^n (1 - u)    
+\end{equation}
+$$
+
+where we have the Boltzmann factor, $u  = \exp(-\hbar \omega/k_bT)$.
+
+## In-situ imaging
+We can then formally write the diagonal density profile in real space as follows,
+
+$$
+\begin{align}
+    \bra x \rho \ket {x} &= \sum_{n, n'} \braket {x|n} \bra n  \rho \ket {n'} \braket{n'|x}\\
+    &= \frac{1}{l_h} \, \sum_{n, n'} h_{n}(x/l_h) h_{n'}^*(x/l_h)\,  \delta_{n, n'} \, u^n (1 - u)   \\ 
+    &= \frac{1}{l_h} \, (1 - u)\, \sum_{n} h_{n}(x/l_h)^2 u^n
+\end{align}
+$$
+
+One might naively expect this to be some arbitrary function since it involves the sum of many oscillating functions. However, since the Hermite functions are quite special, it actually has a very simple form. Starting from a standard definition of the Hermite polynomials,
+
+$$
+H_n(x) = (-1)^n e^{x^2} \frac{d^n}{dx^n} (e^{-x^2})
+$$
+
+An identity that we will make heavy use of henceforth is the Gaussian integral, $\int_{-\infty}^{\infty} \exp((x-a)^2) = \sqrt{\pi/a}$. Using this, we can immediately write a rather trivial integral form of the Gaussian as $\exp(-x^2) = \pi^{-1/2} \, \int \, dt \, \exp(-t^2 + 2ixt)$. Plugging this into the definition of the Hermite polynomials, we get their real-space integral form as follows,
+
+$$
+\begin{equation}
+    H_n(x) = \frac{(-2i)^n}{\sqrt{\pi}} e^{x^2} \int_{-\infty}^{\infty} t^n e^{-t^2 + 2ixt} dt
+\end{equation}
+$$
+
+We can now multiply $H_n(x) u^n e^{-x^2} / n!\sqrt{\pi}$ on both sides and sum over $n$ to get the expression that we wish to evaluate,
+
+$$
+\begin{align}
+\sum_n \frac{1}{\sqrt{\pi} 2^n n!}H_n(x)^2 e^{-x^2} u^n &= \sum_n \frac{(-i)^n}{\pi n!} \left (\int_{-\infty}^{\infty} t^n e^{-t^2 + 2ixt} dt\right) H_n(x) u^n\\
+\sum_n h_n(x)^2 u^n &= \sum_n \frac{(-i)^n}{\pi n!} \left (\int_{-\infty}^{\infty} t^n e^{-t^2 + 2ixt} dt\right) H_n(x) u^n\\
+&= \frac{1}{\pi} \int_{-\infty}^{\infty} \left ( \sum_n H_n(x) \frac{(-iut)^n}{n!}\right) e^{-t^2 + 2ixt} dt
+\end{align}
+$$
+
+The expression inside the sum is simply the generating function of the Hermite polynomials, $\exp{(2xt - t^2)} = \sum_n H_n(x) t^n/n!$, so we can write, 
+
+$$
+\begin{align}
+\sum_n h_n(x)^2 u^n &= \frac{1}{\pi} \int_{-\infty}^{\infty} \, dt \, \exp(-2ixut + u^2t^2) \, \exp(-t^2 + 2ixt)\\
+&= \frac{1}{\pi} \int_{-\infty}^{\infty} \, dt \, \exp(-(1 - u^2) t^2 + 2ix(1 - u)t) \\ 
+&= \frac{1}{\pi} \int_{-\infty}^{\infty} \, dt \, \exp\left(-(1 - u^2) \left[\left(t - i\frac{(x/l_h)}{1 +u}\right)^2 + \frac{x^2}{(1+u)^2} \right]\right) \\ 
+\sum_n h_n (x^2) u^n &= \frac{1}{\sqrt{\pi}\sqrt{1 - u^2}}\exp\left(-\left[\frac{1 - u}{1 + u}\right] \, x^2\right)
+\end{align}
+$$
+
+which was solved by reducing it to a standard Gaussian integral. This expression is in fact a special case of the well-known [Mehler kernel](https://en.wikipedia.org/wiki/Mehler_kernel) which arises when computing the single particle propagator for the quantum harmonic oscillator. 
+
+$$
+\braket{x |\hat \rho | x} = \frac{1}{l_h \sqrt{\pi}} \, \frac{1 - u}{\sqrt{1 - u^2}}\, \exp\left(-\left[\frac{1 - u}{1 + u}\right] \, (x/l_h)^2\right)
+$$
+
+In any case, to our surprise, the density profile is a Gaussian in x! This is a very surprising result in my opinion, since the Hermite functions themselves are very oscillatory. At this point, we may simply fit the data to a Gaussian and determine the temperature from the variance. 
+
+## Time-of-flight imaging
+
+However, in cold atom experiments, typically the measurement is not done in-situ since the atom densities are often too large resulting in saturation of the absorption of the light used for imaging. In order to reduce the density, we typically release the cloud from the harmonic trap and allow it to expand ballistically and image it after some time $t$ known as the time-of-flight. For a generic density matrix, this may change the spatial density arbitrarily. Let us see how this affects our thermal state, which now evolves under the free particle Hamiltonian, $\hat H_0 = \hat p^2/2m$, 
+
+$$
+\rho(t) = \exp(-i\hat H_0 t) \hat\rho(0) \exp(i\hat H_0 t)
+$$
+
+$$
+\begin{align}
+    \bra x \hat\rho(t) \ket {x} &= \sum_{n, n'} \braket {x|\exp(-i\hat H_0 t)|n} \bra n  \hat\rho(0) \ket {n'} \braket{n'| \exp(i\hat H_0 t) | x}\\
+    &= \sum_{n, n'} \tilde h_{n}(x, t) \tilde h_{n'}^*(x, t)\,  \delta_{n, n'} \, u^n (1 - u)   \\ 
+    &= (1 - u)\, \sum_{n} \tilde h_{n}(x, t)^2 u^n
+\end{align}
+$$
+
+We now need to compute how the Hermite functions propagate under the free particle Hamiltonian. 
+
+$$
+\begin{align}
+\tilde h_n(x, t) &= \braket {x|\exp\left(-i \frac{\hat p^2 t}{2m}\right)|n}\\
+&= \int dp \, \braket {x|\exp\left(-i \frac{\hat p^2 t}{2m}\right)|p}\braket{p|n}\\
+&= \int dp \, \exp\left(-i \frac{p^2 t}{2m}\right) \braket {x|p}\braket{p|n}\\
+&= \frac{1}{2\pi}\int dp \, \exp\left(-i \left[\frac{p^2 t}{2m} + \frac{px}{\hbar}\right]\right) \braket{p|n}\\
+\end{align}
+$$
+
+where, $\braket{p|n}$ is the Fourier transform of the Hermite function. Here, we have another fun result, 
+$$
+\begin{align}
+\braket{p|n} &= \int dx\, \braket{p|x}\braket{x|n}\\
+&= \frac{1}{\sqrt{l_h}} \, \int dx\, e^{-ipx/\hbar} h_n(x/l_h)
+\end{align}
+$$
+
+Starting from the generating function of the Hermite polynomials, we can write one for the Hermite functions as well,
+$$
+\begin{align}
+\sum_n H_n(x) \frac{t^n}{n!} &= \exp{(2xt - t^2)}\\
+\sum_n \frac{1}{n!} H_n(x) e^{-x^2/2} \, t^n &= \exp{(2xt - t^2 - x^2/2)}\\
+\sum_n \frac{1}{\sqrt{n!}} \, \frac{1}{\sqrt{2^n n!}} H_n(x) e^{-x^2/2} \, u^n &= \exp{(\sqrt{2}xu - u^2/2 - x^2/2)}\\
+\sum_n \frac{1}{\sqrt{n!}} \, h_n(x) u^n &= \exp{(\sqrt{2}xu - u^2/2 - x^2/2)}
+\end{align}
+$$
+
+Then, the fourier transform is computed as,
+
+$$
+\int dx e^{}
+$$
