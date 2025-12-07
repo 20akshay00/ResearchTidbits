@@ -289,7 +289,7 @@ $$
 \end{align}
 $$
 
-where, $\braket{p|n}$ is the Fourier transform of the Hermite function. 
+where, $\braket{p|n}$ is the Fourier transform of the harmonic oscillator eigenstates.
 
 $$
 \begin{align}
@@ -333,9 +333,9 @@ $$
 \end{align}
 $$
 
-Generically, we require the following integral to proceed,
+Generically, we require the following integral to proceed ($A, B \in \mathbb{R}^+$),
 $$
-I_n = \int_{-\infty}^{\infty} dx \, h_n(x) \, e^{i(Ax^2 + Bx)}    
+I_n = \int_{-\infty}^{\infty} dx \, h_n(x) \, e^{i(Ax^2 + Bx)}
 $$
 
 At this point, you already know the drill. Its time to whip out the generating function once again,
@@ -372,7 +372,7 @@ $$
 \sigma^2 = (1 + (\omega t)^2) \cdot \frac{1 + \exp(-\hbar \omega/k_b T)}{1 - \exp(-\hbar \omega/k_b T)}
 $$
 
-Below we see the time-of-flight ($t = 18ms$) image of a gas of Rubidium-87 atoms along the $x-z$ plane trapped in a harmonic oscillator with frequency $\approx 440Hz$ along $x$ and $z$. Visually, it seems that a gaussian model is clearly a good fit to the data.
+Below we see the time-of-flight ($t = 18ms$) image of a gas of Rubidium-87 atoms along the $x-z$ plane trapped in a harmonic oscillator with frequency $\approx 440Hz$ along $x$ and $z$. Visually, it seems that a Gaussian model is clearly a good fit to the data.
 
 ![](data_fit.png){fig-align="center"}
 
