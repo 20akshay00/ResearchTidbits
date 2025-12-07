@@ -3,7 +3,8 @@ project:
 
 execute:
   freeze: auto
-
+  kernel: julia
+  
 website:
   title: "ResearchTidbits"
   site-url: https://20akshay00.github.io/ResearchTidbits/

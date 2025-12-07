@@ -3,3 +3,9 @@
 p {
     text-align: justify
 }
+
+.cell-output-display svg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
