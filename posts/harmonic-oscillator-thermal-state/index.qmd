@@ -129,7 +129,7 @@ $$
 \braket{x |\hat \rho | x} = \frac{1}{l_h \sqrt{\pi}} \, \frac{1 - u}{\sqrt{1 - u^2}}\, \exp\left(-\left[\frac{1 - u}{1 + u}\right] \, (x/l_h)^2\right)
 $$
 
-In any case, to our surprise, the density profile is a Gaussian in x! This is a very surprising result in my opinion, since the Hermite functions themselves are very oscillatory. At this point, we may simply fit the data to a Gaussian and determine the temperature from the variance. 
+In any case, it turns out that the density profile is a Gaussian in x! This is a very surprising (but well-known) result in my opinion, since the Hermite functions themselves are very oscillatory. At this point, we may simply fit the data to a Gaussian and determine the temperature from the variance. 
 
 ```{ojs}
 //| echo: false
