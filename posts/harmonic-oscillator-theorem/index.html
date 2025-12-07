@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Akshay Shankar">
+<meta name="dcterms.date" content="2025-12-10">
+<meta name="description" content="We know the Harmonic oscillator is pretty special at the lever of single particle physics. What if we now have an interacting many-body system?">
 
-<title>RSS Feed – ResearchTidbits</title>
+<title>Harmonic oscillator theorem – ResearchTidbits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,25 +26,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-7e85070ab2d6641e99d95624d876f07d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-7e85070ab2d6641e99d95624d876f07d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,35 +70,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-361104V04L"></script>
 
 <script type="text/javascript">
@@ -113,53 +85,26 @@ gtag('js', new Date());
 gtag('config', 'G-361104V04L', { 'anonymize_ip': true});
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="ResearchTidbits" href="feed.xml" data-external="1"><meta property="og:title" content="RSS Feed – ResearchTidbits">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Harmonic oscillator theorem – ResearchTidbits">
+<meta property="og:description" content="We know the Harmonic oscillator is pretty special at the lever of single particle physics. What if we now have an interacting many-body system?">
 <meta property="og:image" content="https://20akshay00.github.io/ResearchTidbits/posts/harmonic-oscillator-theorem/thermal_density.png">
 <meta property="og:site_name" content="ResearchTidbits">
-<meta name="twitter:title" content="RSS Feed – ResearchTidbits">
+<meta name="twitter:title" content="Harmonic oscillator theorem – ResearchTidbits">
+<meta name="twitter:description" content="We know the Harmonic oscillator is pretty special at the lever of single particle physics. What if we now have an interacting many-body system?">
 <meta name="twitter:image" content="https://20akshay00.github.io/ResearchTidbits/posts/harmonic-oscillator-theorem/thermal_density.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">ResearchTidbits</span>
     </a>
   </div>
@@ -170,7 +115,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -184,7 +129,7 @@ window.Quarto = {
 <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="./index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -196,305 +141,60 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Harmonic oscillator theorem</h1>
+                  <div>
+        <div class="description">
+          We know the Harmonic oscillator is pretty special at the lever of single particle physics. What if we now have an interacting many-body system?
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">chunk</div>
+                <div class="quarto-category">bec</div>
+                <div class="quarto-category">quantum</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Akshay Shankar </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 10, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="YmVj">bec <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Y2h1bms=">chunk <span class="quarto-category-count">(4)</span></div><div class="category" data-category="Y29kZQ==">code <span class="quarto-category-count">(3)</span></div><div class="category" data-category="bmliYmxl">nibble <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bnVtYmVyJTIwdGhlb3J5">number theory <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cXVhbnR1bQ==">quantum <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dGhlb3J5">theory <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dGlkYml0">tidbit <span class="quarto-category-count">(3)</span></div></div></div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">RSS Feed</h1>
-</div>
-
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-
-</header>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p>derive propagator -&gt; Mehler kernel -&gt; quarter period makes it a Fourier kernel can also see via heisenberg link to time of flight in BEC experiments.</p>
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Y2h1bmslMkNiZWMlMkNxdWFudHVt" data-listing-date-sort="1765321200000" data-listing-file-modified-sort="1765123959379" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="25">
-<div class="thumbnail"><a href="./posts/harmonic-oscillator-theorem/index.html" class="no-external">
 
-<img loading="lazy" src="./posts/harmonic-oscillator-theorem/thermal_density.png" class="thumbnail-image">
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/harmonic-oscillator-theorem/index.html" class="no-external">Harmonic oscillator theorem</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2h1bms='); return false;">chunk</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YmVj'); return false;">bec</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cXVhbnR1bQ=='); return false;">quantum</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/harmonic-oscillator-theorem/index.html" class="no-external">
-<p>We know the Harmonic oscillator is pretty special at the lever of single particle physics. What if we now have an interacting many-body system?</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/harmonic-oscillator-theorem/index.html" class="no-external">
-<div class="listing-date">
-Dec 10, 2025
-</div>
-<div class="listing-author">
-Akshay Shankar
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="Y2h1bmslMkNiZWMlMkNxdWFudHVt" data-listing-date-sort="1764889200000" data-listing-file-modified-sort="1765123029337" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2969">
-<div class="thumbnail"><a href="./posts/harmonic-oscillator-thermal-state/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/harmonic-oscillator-thermal-state/thermal_density.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/harmonic-oscillator-thermal-state/index.html" class="no-external">Thermal states in a quantum harmonic oscillator</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2h1bms='); return false;">chunk</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YmVj'); return false;">bec</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cXVhbnR1bQ=='); return false;">quantum</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/harmonic-oscillator-thermal-state/index.html" class="no-external">
-<p>Remember that course when you learnt a ton of identities related to the Hermite polynomials? Turns out they’re not completely useless.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/harmonic-oscillator-thermal-state/index.html" class="no-external">
-<div class="listing-date">
-Dec 5, 2025
-</div>
-<div class="listing-author">
-Akshay Shankar
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="dGlkYml0JTJDdGhlb3J5" data-listing-date-sort="1764025200000" data-listing-file-modified-sort="1765031233317" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1099">
-<div class="thumbnail"><a href="./posts/bogoliubov-transformations/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/bogoliubov-transformations/matrix.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/bogoliubov-transformations/index.html" class="no-external">Demystifying Bogoliubov transformations</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkYml0'); return false;">tidbit</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGhlb3J5'); return false;">theory</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/bogoliubov-transformations/index.html" class="no-external">
-<p>Solving quadratic Hamiltonians can be way more fun when linear algebra exposes the symmetries behind Bogoliubov transformations.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/bogoliubov-transformations/index.html" class="no-external">
-<div class="listing-date">
-Nov 25, 2025
-</div>
-<div class="listing-author">
-Akshay Shankar
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="Y2h1bmslMkN0aGVvcnk=" data-listing-date-sort="1746568800000" data-listing-file-modified-sort="1765031677554" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2950">
-<div class="thumbnail"><a href="./posts/phase-twists/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/phase-twists/HF.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/phase-twists/index.html" class="no-external">Superfluidity as a response to phase twists</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2h1bms='); return false;">chunk</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGhlb3J5'); return false;">theory</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/phase-twists/index.html" class="no-external">
-<p>Forget frictionless flow for a moment. Have you ever wondered if there is a microscopic indicator of whether a state exhibits superfluidity?</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/phase-twists/index.html" class="no-external">
-<div class="listing-date">
-May 7, 2025
-</div>
-<div class="listing-author">
-Akshay Shankar
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="Y2h1bmslMkNjb2Rl" data-listing-date-sort="1737932400000" data-listing-file-modified-sort="1765029680618" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2514">
-<div class="thumbnail"><a href="./posts/callbacks/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/callbacks/julia.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/callbacks/index.html" class="no-external">The callback pattern</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y2h1bms='); return false;">chunk</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29kZQ=='); return false;">code</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/callbacks/index.html" class="no-external">
-<p>Why write a simple loop when you can over-engineer a flexible interface? Let us dive into using the Callback pattern in Julia to inject custom logic mid-simulation.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/callbacks/index.html" class="no-external">
-<div class="listing-date">
-Jan 27, 2025
-</div>
-<div class="listing-author">
-Akshay Shankar
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="bmliYmxlJTJDbnVtYmVyJTIwdGhlb3J5" data-listing-date-sort="1726351200000" data-listing-file-modified-sort="1765031978966" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="549">
-<div class="thumbnail"><a href="./posts/linear-indexing/index.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/linear-indexing/mapping.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/linear-indexing/index.html" class="no-external">Linearly indexing a 2D grid</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmliYmxl'); return false;">nibble</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('bnVtYmVyJTIwdGhlb3J5'); return false;">number theory</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/linear-indexing/index.html" class="no-external">
-<p>Running into a number theory problem while writing scientific code isn’t as uncommon as one would imagine.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/linear-indexing/index.html" class="no-external">
-<div class="listing-date">
-Sep 15, 2024
-</div>
-<div class="listing-author">
-Akshay Shankar
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="dGlkYml0JTJDY29kZSUyQ2JlYw==" data-listing-date-sort="1700521200000" data-listing-file-modified-sort="1765031840367" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1228">
-<div class="thumbnail"><a href="./posts/image-crop/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/image-crop/BEC.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/image-crop/index.html" class="no-external">Automating image cropping</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkYml0'); return false;">tidbit</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29kZQ=='); return false;">code</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YmVj'); return false;">bec</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/image-crop/index.html" class="no-external">
-<p>A scrappy approach to automatically crop an image without human input.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/image-crop/index.html" class="no-external">
-<div class="listing-date">
-Nov 21, 2023
-</div>
-<div class="listing-author">
-Akshay Shankar, Dhruva Sambrani
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="dGlkYml0JTJDY29kZQ==" data-listing-date-sort="1685570400000" data-listing-file-modified-sort="1765031956475" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1970">
-<div class="thumbnail"><a href="./posts/phase-diagram/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/phase-diagram/phase_diagram.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/phase-diagram/index.html" class="no-external">Determining phase boundaries</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('dGlkYml0'); return false;">tidbit</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29kZQ=='); return false;">code</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/phase-diagram/index.html" class="no-external">
-<p>Plotting phase boundaries shouldn’t require solving the full many-body problem. Turns out that a handful of iterations can have more information than you’d think.</p>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/phase-diagram/index.html" class="no-external">
-<div class="listing-date">
-Jun 1, 2023
-</div>
-<div class="listing-author">
-Akshay Shankar
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
