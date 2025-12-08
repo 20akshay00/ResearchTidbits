@@ -384,5 +384,5 @@ $$
 
 This gives us a nice and chilly $\approx 97.82 nK$ which is pretty standard (and could even be considered hot) for the average cold atom experiment. It is questionable whether such a procedure is robust from an experimental standpoint, but as a proof-of-concept to check if our theory lands us within the correct ball park, this is pretty neat I'd say!
 
-\section{Epilogue}
+## Epilogue 
 Over the course of this article, we've noticed two elegant results that seemingly arise as mathematical flukes. The first is that an exponentially weighted sum of Hermite functions neatly converges to a Gaussian, and the second is that the free evolution of the thermal state behaves remarkably classically. Perhaps there is something more fundamental going on here? We will tackle this in the next post!
