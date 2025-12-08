@@ -2,8 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/harmonic-oscillator-theorem/index.html",
-      "/posts/harmonic-oscillator-thermal-state/index.html",
+      "/posts/harmonic-oscillator-thermal-state-1/index.html",
       "/posts/bogoliubov-transformations/index.html",
       "/posts/phase-twists/index.html",
       "/posts/callbacks/index.html",
@@ -15,8 +14,7 @@
   {
     "listing": "/feed.html",
     "items": [
-      "/posts/harmonic-oscillator-theorem/index.html",
-      "/posts/harmonic-oscillator-thermal-state/index.html",
+      "/posts/harmonic-oscillator-thermal-state-1/index.html",
       "/posts/bogoliubov-transformations/index.html",
       "/posts/phase-twists/index.html",
       "/posts/callbacks/index.html",
